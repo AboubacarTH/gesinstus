@@ -35,7 +35,7 @@ public class AnneeController {
      * @param id_annee
      * @param annee
      */
-    public void setAnnee(int id_annee, String annee){
+    public void updateAnnee(int id_annee, String annee){
         try {
             String req = "UPDATE annee_scolaires SET annee = ? WHERE id_annee = ?";
             preparedStatement = connection.prepareStatement(req);
@@ -71,7 +71,7 @@ public class AnneeController {
     /**
      *
      * @param annee
-     * @return
+     * @return Annee
      */
     public Annee getAnnee(String annee){
         try {
@@ -89,7 +89,10 @@ public class AnneeController {
         return null;
     }
     
-    //c
+    /**
+     *
+     * @param annee
+     */
     public void addAnnee(String annee){
         try {
             String req = "INSERT INTO annee_scolaires (annee) VALUES (?)";
@@ -101,6 +104,10 @@ public class AnneeController {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Annee> getAnnees(){
         ArrayList<Annee> listAnnee = new ArrayList<>();
         try {
@@ -120,6 +127,11 @@ public class AnneeController {
     
     
     //d
+
+    /**
+     *
+     * @param id_annee
+     */
     public void removeAnnee(int id_annee){
         try {
             String req = "DELETE FROM annee_scolaires WHERE id_annee = ? ";

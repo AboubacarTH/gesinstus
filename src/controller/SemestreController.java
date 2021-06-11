@@ -6,7 +6,6 @@
 package controller;
 
 import bean.Semestre;
-import form.MainForm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,78 +13,88 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import main.Main;
 
 /**
  *
  * @author ATH
  */
 public class SemestreController {
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     public SemestreController(Connection connection) {
         this.connection = connection;
     }
     public SemestreController() {
-        this.connection = MainForm.getConnection();
+        this.connection = Main.getConnection();
     }
-    //C
-    public void addSemestre(Semestre semestre){
+    
+    /**
+     *
+     * @param semestre
+     * @param priorite
+     */
+    public void addSemestre(String semestre, int priorite){
         try {
-            String req = "INSERT INTO semestre (semestre,niveau,priorite) VALUES (?,?,?)";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, semestre.getSemestre());
-            preparedStatement.setString(2, semestre.getNiveau());
-            preparedStatement.setInt(3, semestre.getPriorite());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-            error_information();
-        }
-    }
-    public void addSemestre(String semestre, String niveau, int priorite){
-        try {
-            String req = "INSERT INTO semestre (semestre,niveau,priorite) VALUES (?,?,?)";
+            String req = "INSERT INTO semestres (semestre, priorite) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, semestre);
-            preparedStatement.setString(2, niveau);
-            preparedStatement.setInt(3, priorite);
+            preparedStatement.setInt(2, priorite);
             preparedStatement.executeUpdate();
-            success_information();
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-            error_information();
         }
     }
-    //R
-    public Semestre getSemestre(String semestre, String niveau){
+
+    /**
+     *
+     * @param id_semestre
+     * @param semestre
+     * @param priorite
+     */
+    public void updateSemestre(int id_semestre, String semestre, int priorite){
         try {
-            String req = "SELECT * FROM semestre WHERE semestre = ? AND niveau = ?";
+            String req = "UPDATE semestres SET semestre = ?, priorite = ? WHERE id_semestre = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, semestre);
-            preparedStatement.setString(2, niveau);
+            preparedStatement.setInt(2, priorite);
+            preparedStatement.setInt(3, id_semestre);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     *
+     * @param id_semestre
+     */
+    public void removeSemestre(int id_semestre){
+        try {
+            String req = "DELETE FROM semestres WHERE id_semestre = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_semestre);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_semestre
+     * @return
+     */
+    public Semestre getSemestre(int id_semestre){
+        try {
+            String req = "SELECT * FROM semestres WHERE id_semestre = ?";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_semestre);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Semestre(resultSet.getString("semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    public Semestre getSemestre(Semestre semestre){
-        try {
-            String req = "SELECT * FROM semestre WHERE semestre = ? AND niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, semestre.getSemestre());
-            preparedStatement.setString(2, semestre.getNiveau());
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                return new Semestre(resultSet.getString("semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
+                return new Semestre(resultSet.getInt("id_semestre"), resultSet.getString("semestre"), resultSet.getInt("priorite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,91 +102,24 @@ public class SemestreController {
         return null;
     }
     
-    public ArrayList<Semestre> getListSemestre(String niveau){
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Semestre> getSemestres(){
         ArrayList<Semestre> listSemestre = new ArrayList<>();
         try {
             String req = "SELECT * FROM semestre ";
-            if(!niveau.equals(null) && !niveau.equals("Tous")){
-                req += "WHERE niveau = '" + niveau + "' ";
-            }
-            req += "ORDER BY priorite ASC";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listSemestre.add(new Semestre(resultSet.getString("semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
+                listSemestre.add(new Semestre(resultSet.getInt("id_semestre"), resultSet.getString("semestre"), resultSet.getInt("priorite")));
             }
             return listSemestre;
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-    //U
-    public void setSemestre(Semestre oldValue,Semestre newValue){
-        try {
-            String req = "UPDATE semestre SET semestre = ?, niveau = ?, priorite = ? WHERE semestre = ? AND niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, newValue.getSemestre());
-            preparedStatement.setString(2, newValue.getNiveau());
-            preparedStatement.setInt(3, newValue.getPriorite());
-            preparedStatement.setString(4, oldValue.getSemestre());
-            preparedStatement.setString(5, oldValue.getNiveau());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void setSemestre(String newSemestre, String newNiveau, int newPriorite, String oldSemestre,String oldNiveau){
-        try {
-            String req = "UPDATE semestre SET semestre = ?, niveau = ?, priorite = ? WHERE semestre = ? AND niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, newSemestre);
-            preparedStatement.setString(2, newNiveau);
-            preparedStatement.setInt(3, newPriorite);
-            preparedStatement.setString(4, oldSemestre);
-            preparedStatement.setString(5, oldNiveau);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    //D
-    public void removeSemestre(Semestre semestre){
-        try {
-            String req = "DELETE FROM semestre WHERE semestre = ? AND niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, semestre.getSemestre());
-            preparedStatement.setString(2, semestre.getNiveau());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void removeSemestre(String semestre, String niveau){
-        try {
-            String req = "DELETE FROM semestre WHERE semestre = ? AND niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, semestre);
-            preparedStatement.setString(2, niveau);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void success_information() {
-        JOptionPane.showMessageDialog(null, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-    private void error_information(){
-        JOptionPane.showMessageDialog(null, "Opération echouée ", "Echec !", JOptionPane.WARNING_MESSAGE);
     }
 }

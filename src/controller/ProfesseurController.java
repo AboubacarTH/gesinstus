@@ -6,7 +6,6 @@
 package controller;
 
 import bean.Professeur;
-import form.MainForm;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,14 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import main.Main;
 
 /**
  *
  * @author ATH
  */
 public class ProfesseurController {
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
@@ -30,176 +29,134 @@ public class ProfesseurController {
         this.connection = connection;
     }
     public ProfesseurController() {
-        this.connection = MainForm.getConnection();
+        this.connection = Main.getConnection();
     }
-    public void setConnection(Connection connection){
-        this.connection = connection;
-    }
-    //C
-    public void addProfesseur(String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String nationalite, String contact, String titre, String diplome, boolean  etat, String mot_de_passe, String sexe){
+    
+    /**
+     *
+     * @param id_nationalite
+     * @param matricule
+     * @param nom_prenom
+     * @param date_de_naissance
+     * @param lieu_de_naissance
+     * @param contact
+     * @param titre
+     * @param diplome
+     * @param sexe
+     * @param mot_de_passe
+     */
+    public void addProfesseur(int id_nationalite, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String titre, String diplome, String sexe, String mot_de_passe, boolean isActif){
         try {
-            String req = "INSERT INTO professeur (matricule, nom_prenom, date_de_naissance, lieu_de_naissance, nationalite, contact, titre, diplome, etat, mot_de_passe, sexe) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            String req = "INSERT INTO professeurs (id_nationalite, matricule, nom_prenom, date_de_naissance, lieu_de_naissance, contact, titre, diplome, sexe, mot_de_passe, actif) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, matricule);
-            preparedStatement.setString(2, nom_prenom);
-            preparedStatement.setDate(3, date_de_naissance);
-            preparedStatement.setString(4, lieu_de_naissance);
-            preparedStatement.setString(5, nationalite);
+            preparedStatement.setInt(1, id_nationalite);
+            preparedStatement.setString(2, matricule);
+            preparedStatement.setString(3, nom_prenom);
+            preparedStatement.setDate(4, date_de_naissance);
+            preparedStatement.setString(5, lieu_de_naissance);
             preparedStatement.setString(6, contact);
             preparedStatement.setString(7, titre);
             preparedStatement.setString(8, diplome);
-            preparedStatement.setBoolean(9, etat);
+            preparedStatement.setString(9, sexe);
             preparedStatement.setString(10, mot_de_passe);
-            preparedStatement.setString(11, sexe);
+            preparedStatement.setBoolean(11, isActif);
             preparedStatement.executeUpdate();
-            success_information();
         } catch (SQLException ex) {
             Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-            error_information();
         }
     }
-    //R
-    public Professeur getProfesseur(String matricule){
+
+    /**
+     *
+     * @param id_professeur
+     * @param id_nationalite
+     * @param matricule
+     * @param nom_prenom
+     * @param date_de_naissance
+     * @param lieu_de_naissance
+     * @param contact
+     * @param titre
+     * @param diplome
+     * @param sexe
+     * @param mot_de_passe
+     * @param isActif
+     */
+    public void updateProfesseur(int id_professeur, int id_nationalite, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String titre, String diplome, String sexe, String mot_de_passe, boolean isActif){
         try {
-            String req = "SELECT * FROM professeur WHERE matricule = ?";
+            String req = "UPDATE professeurs SET id_nationalite = ?, matricule = ?, nom_prenom = ?, date_de_naissance = ?, lieu_de_naissance = ?, contact = ?, titre = ?, diplome = ?, sexe = ?, mot_de_passe = ?, actif = ? WHERE id_professeur = ?";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, matricule);
+            preparedStatement.setInt(1, id_nationalite);
+            preparedStatement.setString(2, matricule);
+            preparedStatement.setString(3, nom_prenom);
+            preparedStatement.setDate(4, date_de_naissance);
+            preparedStatement.setString(5, lieu_de_naissance);
+            preparedStatement.setString(6, contact);
+            preparedStatement.setString(7, titre);
+            preparedStatement.setString(8, diplome);
+            preparedStatement.setString(9, sexe);
+            preparedStatement.setString(10, mot_de_passe);
+            preparedStatement.setBoolean(11, isActif);
+            preparedStatement.setInt(12, id_professeur);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     *
+     * @param id_professeur
+     */
+    public void removeProfesseur(int id_professeur){
+        try {
+            String req = "DELETE FROM professeurs WHERE id_professeur = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_professeur);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_professeur
+     * @return
+     */
+    public Professeur getProfesseur(int id_professeur){
+        try {
+            String req = "SELECT * FROM professeurs WHERE id_professeur = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_professeur);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Professeur(resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("nationalite"), resultSet.getString("contact"), resultSet.getString("titre"), resultSet.getString("diplome"), resultSet.getBoolean("etat"), resultSet.getString("mot_de_passe"), resultSet.getString("sexe"));
+                return new Professeur(resultSet.getInt("id_professeur"), resultSet.getInt("id_nationalite"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("titre"), resultSet.getString("diplome"), resultSet.getString("sexe"), resultSet.getString("mot_de_passe"), resultSet.getBoolean("actif"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    public int getProfesseurCount(){
-        try {
-            String req = "SELECT COUNT(matricule) AS effectif FROM professeur";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                return resultSet.getInt("effectif");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
-    public int getProfesseurCount(boolean  etat){
-        try {
-            String req = "SELECT COUNT(matricule) AS effectif FROM professeur WHERE etat = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, etat);
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                return resultSet.getInt("effectif");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
     
-    public ArrayList<Professeur> getListProfesseur(){
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Professeur> getProfesseurs(){
         ArrayList<Professeur> listProfesseur = new ArrayList<>();
         try {
-            String req = "SELECT * FROM professeur WHERE etat = ? ";
+            String req = "SELECT * FROM professeurs ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, true);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listProfesseur.add(new Professeur(resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("nationalite"), resultSet.getString("contact"), resultSet.getString("titre"), resultSet.getString("diplome"), resultSet.getBoolean("etat"), resultSet.getString("mot_de_passe"), resultSet.getString("sexe")));
+                listProfesseur.add(new Professeur(resultSet.getInt("id_professeur"), resultSet.getInt("id_nationalite"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("titre"), resultSet.getString("diplome"), resultSet.getString("sexe"), resultSet.getString("mot_de_passe"), resultSet.getBoolean("actif")));
             }
             return listProfesseur;
         } catch (SQLException ex) {
             Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-    //U
-    public void setProfesseur(String oldMatricule, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String nationalite, String contact, String titre, String diplome, boolean  etat, String mot_de_passe, String sexe){
-        try {
-            String req = "UPDATE professeur SET matricule = ?, nom_prenom = ?, date_de_naissance = ?, lieu_de_naissance = ?, nationalite = ?, contact = ?, titre = ?, diplome = ?, etat = ?, mot_de_passe = ?, sexe = ? WHERE matricule = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, matricule);
-            preparedStatement.setString(2, nom_prenom);
-            preparedStatement.setDate(3, date_de_naissance);
-            preparedStatement.setString(4, lieu_de_naissance);
-            preparedStatement.setString(5, nationalite);
-            preparedStatement.setString(6, contact);
-            preparedStatement.setString(7, titre);
-            preparedStatement.setString(8, diplome);
-            preparedStatement.setBoolean(9, etat);
-            preparedStatement.setString(10, mot_de_passe);
-            preparedStatement.setString(11, sexe);
-            preparedStatement.setString(12, oldMatricule);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void setProfesseur(Professeur o, Professeur n){
-        try {
-            String req = "UPDATE professeur SET matricule = ?, nom_prenom = ?, date_de_naissance = ?, lieu_de_naissance = ?, nationalite = ?, contact = ?, titre = ?, diplome = ?, etat = ?, mot_de_passe = ?, sexe = ? WHERE matricule = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, n.getMatricule());
-            preparedStatement.setString(2, n.getNom_prenom());
-            preparedStatement.setDate(3, n.getDate_de_naissance());
-            preparedStatement.setString(4, n.getLieu_de_naissance());
-            preparedStatement.setString(5, n.getNationalite());
-            preparedStatement.setString(6, n.getContact());
-            preparedStatement.setString(7, n.getTitre());
-            preparedStatement.setString(8, n.getDiplome());
-            preparedStatement.setBoolean(9, n.isEtat());
-            preparedStatement.setString(10, n.getMot_de_passe());
-            preparedStatement.setString(11, n.getSexe());
-            preparedStatement.setString(12, o.getMatricule());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    //D
-    public void removeProfesseur(String matricule){
-        try {
-            String req = "UPDATE professeur SET etat = ? WHERE matricule = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, false);
-            preparedStatement.setString(2, matricule);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void removeProfesseur(Professeur professeur){
-        try {
-            String req = "UPDATE professeur SET etat = ? WHERE matricule = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, false);
-            preparedStatement.setString(2, professeur.getMatricule());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(ProfesseurController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void success_information() {
-        JOptionPane.showMessageDialog(null, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-    private void error_information(){
-        JOptionPane.showMessageDialog(null, "Opération echouée ", "Echec !", JOptionPane.WARNING_MESSAGE);
     }
 }
