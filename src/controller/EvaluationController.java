@@ -5,8 +5,7 @@
  */
 package controller;
 
-import bean.Note;
-import form.MainForm;
+import bean.Evaluation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,56 +13,114 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import main.Main;
 
 /**
  *
  * @author ATH
  */
 public class EvaluationController {
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
+    
     public EvaluationController(){
-        this.connection = MainForm.getConnection();
+        this.connection = Main.getConnection();
     }
     
-    public ArrayList<Note> getColonnes(String annee, String niveau, String semestre, String filiere, String option, String id_ue, String id_ec, String rechercher){
-        ArrayList <Note> list = new ArrayList<>();
+    /**
+     *
+     * @param id_etudiant
+     * @param id_annee
+     * @param id_element_constitufit
+     * @param note
+     * @param session
+     */
+    public void addEvaluation(int id_etudiant, int id_annee, int id_element_constitufit, double note, double session){
         try {
-            String req = "SELECT * FROM etudiant JOIN ue ON "
-                    + "etudiant.filiere = ue.filiere AND etudiant.options = ue.options JOIN ec ON "
-                    + "ue.id_ue = ec.id_ue WHERE etudiant.etat = ? ";
-            if(annee != null && !"Toutes".equals(annee)){
-                req += "AND annee = '"+ annee +"' ";
-            }
-            if(niveau != null && !"Tous".equals(niveau)){
-                req += "AND ue.niveau = '"+ niveau +"' ";
-            }
-            if(semestre != null && !"Toutes".equals(semestre)){
-                req += "AND ue.semestre = '"+ semestre +"' ";
-            }
-            if(filiere != null && !"Toutes".equals(filiere)){
-                req += "AND ue.filiere = '"+ filiere +"' ";
-            }
-            if(option != null && !"Toutes".equals(option)){
-                req += "AND ue.options = '"+ option +"' ";
-            }
-            if(id_ue != null && !"Toutes".equals(id_ue)){
-                req += "AND ue.id_ue = '"+ id_ue +"' ";
-            }
-            if(id_ec != null && !"Tous".equals(id_ec)){
-                req += "AND ec.id_ec = '"+ id_ec +"' ";
-            }
-            if(rechercher != null){
-                req += "AND nom_prenom LIKE '%"+ rechercher +"%' ";
-            }
+            String req = "INSERT INTO evaluations (id_etudiant, id_annee, id_element_constitufit, note, session) VALUES (?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, true);
+            preparedStatement.setInt(1, id_etudiant);
+            preparedStatement.setInt(2, id_annee);
+            preparedStatement.setInt(3, id_element_constitufit);
+            preparedStatement.setDouble(4, note);
+            preparedStatement.setDouble(5, session);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_evaluation
+     * @param id_etudiant
+     * @param id_annee
+     * @param id_element_constitufit
+     * @param note
+     * @param session
+     */
+    public void updateEvaluation(int id_evaluation, int id_etudiant, int id_annee, int id_element_constitufit, double note, double session){
+        try {
+            String req = "UPDATE evaluations SET id_etudiant = ?, id_annee = ?, id_element_constitufit = ?, note = ?, session = ? WHERE id_evaluation = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_etudiant);
+            preparedStatement.setInt(2, id_annee);
+            preparedStatement.setInt(3, id_element_constitufit);
+            preparedStatement.setDouble(4, note);
+            preparedStatement.setDouble(5, session);
+            preparedStatement.setInt(6, id_evaluation);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_evaluation
+     */
+    public void removeEvaluation(int id_evaluation){
+        try {
+            String req = "DELETE FROM evaluations WHERE id_evaluation = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_evaluation);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_evaluation
+     * @return Evaluation
+     */
+    public Evaluation getEvaluation(int id_evaluation){
+        try {
+            String req = "SELECT * FROM evaluations WHERE id_evaluation = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_evaluation);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new Evaluation(resultSet.getInt("id_evaluation"), resultSet.getInt("id_etudiant"), resultSet.getInt("id_annee"), resultSet.getInt("id_element_constitutif"), resultSet.getDouble("note"), resultSet.getDouble("session"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<Evaluation> getEvaluations(){
+        try {
+            ArrayList<Evaluation> list = new ArrayList<>();
+            String req = "SELECT * FROM evaluations ";
+            preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                list.add(new Note(resultSet.getString("id_ue"),resultSet.getString("id_ec"), resultSet.getString("matricule"), resultSet.getString("annee"), resultSet.getString("nom_prenom"), resultSet.getString("filiere"), resultSet.getString("semestre")));
+                list.add(new Evaluation(resultSet.getInt("id_evaluation"), resultSet.getInt("id_etudiant"), resultSet.getInt("id_annee"), resultSet.getInt("id_element_constitutif"), resultSet.getDouble("note"), resultSet.getDouble("session")));
             }
             return list;
         } catch (SQLException ex) {
@@ -72,65 +129,4 @@ public class EvaluationController {
         return null;
     }
     
-    public double getNote(String annee, String matricule, String id_ec, String type_evaluation){
-        String type = "note";
-        if("SESSION".equals(type_evaluation)){
-            type = "session";
-        }
-        try {
-            String req = "SELECT "+ type +" FROM evaluation WHERE id_ec = ? AND matricule = ? AND annee = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, id_ec);
-            preparedStatement.setString(2, matricule);
-            preparedStatement.setString(3, annee);
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                return resultSet.getDouble(type);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0.00;
-    }
-    public void setNote(String annee, String matricule, String id_ec, String type_evaluation, double note){
-        String type = "note";
-        if("SESSION".equals(type_evaluation)){
-            type = "session";
-        }
-        try {
-            String req = "SELECT "+ type +" FROM evaluation WHERE id_ec = ? AND matricule = ? AND annee = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, id_ec);
-            preparedStatement.setString(2, matricule);
-            preparedStatement.setString(3, annee);
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                req = "UPDATE evaluation SET "+ type +" = ? WHERE id_ec = ? AND matricule = ? AND annee = ?";
-                preparedStatement = connection.prepareStatement(req);
-                preparedStatement.setDouble(1, note);
-                preparedStatement.setString(2, id_ec);
-                preparedStatement.setString(3, matricule);
-                preparedStatement.setString(4, annee);
-                preparedStatement.executeUpdate();
-            }else{
-                req = "INSERT INTO evaluation (id_ec,matricule,annee,"+ type +") VALUES (?,?,?,?)";
-                preparedStatement = connection.prepareStatement(req);
-                preparedStatement.setString(1, id_ec);
-                preparedStatement.setString(2, matricule);
-                preparedStatement.setString(3, annee);
-                preparedStatement.setDouble(4, note);
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(EvaluationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    private void success_information() {
-        JOptionPane.showMessageDialog(null, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-    private void error_information(){
-        JOptionPane.showMessageDialog(null, "Opération echouée ", "Echec !", JOptionPane.WARNING_MESSAGE);
-    }
 }

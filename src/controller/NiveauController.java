@@ -6,7 +6,6 @@
 package controller;
 
 import bean.Niveau;
-import form.MainForm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,72 +13,94 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import main.Main;
 
 /**
  *
  * @author ATH
  */
 public class NiveauController {
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
     public NiveauController() {
-        this.connection = MainForm.getConnection();
+        this.connection = Main.getConnection();
     }
-    //C
-    public void addNiveau(Niveau niveau){
+    
+    /**
+     *
+     * @param id_option
+     * @param id_semestre
+     * @param niveau
+     * @param priorite
+     */
+    public void addNiveau(int id_option, int id_semestre, String niveau, int priorite){
         try {
-            String req = "INSERT INTO niveau (niveau,priorite) VALUES (?,?)";
+            String req = "INSERT INTO niveaux (id_option, id_semestre, niveau, priorite) VALUES (?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau.getNiveau());
-            preparedStatement.setInt(2, niveau.getPriorite());            
+            preparedStatement.setInt(1, id_option);
+            preparedStatement.setInt(2, id_semestre);
+            preparedStatement.setString(3, niveau);
+            preparedStatement.setInt(4, priorite);
             preparedStatement.executeUpdate();
-            success_information();
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-            error_information();
         }
     }
-    public void addNiveau(String niveau, int priorite){
+    
+    /**
+     *
+     * @param id_niveau
+     * @param id_option
+     * @param id_semestre
+     * @param niveau
+     * @param priorite
+     */
+    public void updateNiveau(int id_niveau, int id_option, int id_semestre, String niveau, int priorite){
         try {
-            String req = "INSERT INTO niveau (niveau,priorite) VALUES (?,?)";
+            String req = "UPDATE niveaux SET id_option = ?, id_semestre = ?, niveau = ?, priorite = ? WHERE id_niveau = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau);
-            preparedStatement.setInt(2, priorite);            
+            preparedStatement.setInt(1, id_option);
+            preparedStatement.setInt(2, id_semestre);
+            preparedStatement.setString(3, niveau);
+            preparedStatement.setInt(4, priorite);
+            preparedStatement.setInt(5, id_niveau);
             preparedStatement.executeUpdate();
-            success_information();
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-            error_information();
         }
     }
-    //R
-    public Niveau getNiveau(Niveau niveau){
+    
+    /**
+     *
+     * @param id_niveau
+     */
+    public void removeNiveau(int id_niveau){
         try {
-            String req = "SELECT * FROM niveau WHERE niveau = ?";
+            String req = "DELETE FROM niveaux WHERE id_niveau = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau.getNiveau());
+            preparedStatement.setInt(1, id_niveau);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     *
+     * @param id_niveau
+     * @return
+     */
+    public Niveau getNiveau(int id_niveau){
+        try {
+            String req = "SELECT * FROM niveaux WHERE id_niveau = ?";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_niveau);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Niveau(resultSet.getString("niveau"), resultSet.getInt("priorite"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    public Niveau getNiveau(String niveau){
-        try {
-            String req = "SELECT * FROM niveau WHERE niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau);
-            preparedStatement.execute();
-            resultSet = preparedStatement.getResultSet();
-            if(resultSet.next()){
-                return new Niveau(resultSet.getString("niveau"), resultSet.getInt("priorite"));
+                return new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getInt("id_semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,81 +108,24 @@ public class NiveauController {
         return null;
     }
     
-    public ArrayList<Niveau> getListNiveau(){
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Niveau> getNiveaux(){
         ArrayList<Niveau> listNiveau = new ArrayList<>();
         try {
-            String req = "SELECT * FROM niveau ORDER BY priorite ASC";
+            String req = "SELECT * FROM niveaux ORDER BY priorite ASC";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listNiveau.add(new Niveau(resultSet.getString("niveau"), resultSet.getInt("priorite")));
+                listNiveau.add(new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getInt("id_semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
             }
             return listNiveau;
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-    //U
-    public void setNiveau(Niveau oldValue, Niveau newValue){
-        try {
-            String req = "UPDATE niveau SET niveau = ?,priorite = ? WHERE niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, newValue.getNiveau());
-            preparedStatement.setInt(2, newValue.getPriorite());
-            preparedStatement.setString(3, oldValue.getNiveau());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void setNiveau(String newNiveau, int newPriorite, String oldNiveau){
-        try {
-            String req = "UPDATE niveau SET niveau = ?,priorite = ? WHERE niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, newNiveau);
-            preparedStatement.setInt(2, newPriorite);
-            preparedStatement.setString(3, oldNiveau);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    //D
-    public void removeNiveau(Niveau niveau){
-        try {
-            String req = "DELETE FROM niveau WHERE niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau.getNiveau());
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void removeNiveau(String niveau){
-        try {
-            String req = "DELETE FROM niveau WHERE niveau = ?";
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setString(1, niveau);
-            preparedStatement.executeUpdate();
-            success_information();
-        } catch (SQLException ex) {
-            error_information();
-            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void success_information() {
-        JOptionPane.showMessageDialog(null, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-    private void error_information(){
-        JOptionPane.showMessageDialog(null, "Opération echouée ", "Echec !", JOptionPane.WARNING_MESSAGE);
     }
 }

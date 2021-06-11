@@ -5,7 +5,6 @@
  */
 package controller;
 
-import form.MainForm;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -16,13 +15,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import main.Main;
 
 /**
  *
  * @author ATH
  */
 public class ConfigurationController {
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
@@ -30,7 +30,7 @@ public class ConfigurationController {
         this.connection = connection;
     }
     public ConfigurationController() {
-        this.connection = MainForm.getConnection();
+        this.connection = Main.getConnection();
     }
     public int getSMSRestant(){
         try {
