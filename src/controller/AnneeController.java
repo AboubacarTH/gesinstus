@@ -125,9 +125,6 @@ public class AnneeController {
         return null;
     }
     
-    
-    //d
-
     /**
      *
      * @param id_annee

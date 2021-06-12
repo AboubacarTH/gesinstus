@@ -31,18 +31,16 @@ public class NiveauController {
     /**
      *
      * @param id_option
-     * @param id_semestre
      * @param niveau
      * @param priorite
      */
-    public void addNiveau(int id_option, int id_semestre, String niveau, int priorite){
+    public void addNiveau(int id_option, String niveau, int priorite){
         try {
-            String req = "INSERT INTO niveaux (id_option, id_semestre, niveau, priorite) VALUES (?, ?, ?, ?)";
+            String req = "INSERT INTO niveaux (id_option, niveau, priorite) VALUES (?, ?, ?)";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_option);
-            preparedStatement.setInt(2, id_semestre);
-            preparedStatement.setString(3, niveau);
-            preparedStatement.setInt(4, priorite);
+            preparedStatement.setString(2, niveau);
+            preparedStatement.setInt(3, priorite);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,19 +51,17 @@ public class NiveauController {
      *
      * @param id_niveau
      * @param id_option
-     * @param id_semestre
      * @param niveau
      * @param priorite
      */
-    public void updateNiveau(int id_niveau, int id_option, int id_semestre, String niveau, int priorite){
+    public void updateNiveau(int id_niveau, int id_option, String niveau, int priorite){
         try {
-            String req = "UPDATE niveaux SET id_option = ?, id_semestre = ?, niveau = ?, priorite = ? WHERE id_niveau = ? ";
+            String req = "UPDATE niveaux SET id_option = ?, niveau = ?, priorite = ? WHERE id_niveau = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_option);
-            preparedStatement.setInt(2, id_semestre);
-            preparedStatement.setString(3, niveau);
-            preparedStatement.setInt(4, priorite);
-            preparedStatement.setInt(5, id_niveau);
+            preparedStatement.setString(2, niveau);
+            preparedStatement.setInt(3, priorite);
+            preparedStatement.setInt(4, id_niveau);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,7 +96,24 @@ public class NiveauController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getInt("id_semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
+                return new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Niveau getNiveau(int id_option, String niveau){
+        try {
+            String req = "SELECT * FROM niveaux WHERE id_option = ? AND niveau = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_option);
+            preparedStatement.setString(2, niveau);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getString("niveau"), resultSet.getInt("priorite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(NiveauController.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,7 +133,7 @@ public class NiveauController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listNiveau.add(new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getInt("id_semestre"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
+                listNiveau.add(new Niveau(resultSet.getInt("id_niveau"), resultSet.getInt("id_option"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
             }
             return listNiveau;
         } catch (SQLException ex) {
