@@ -95,6 +95,22 @@ public class OptionController {
         }
         return null;
     }
+    public Option getOption(int id_filiere, String option){
+        try {
+            String req = "SELECT * FROM options WHERE id_filiere = ? AND option = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_filiere);
+            preparedStatement.setString(2, option);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     /**
      *
@@ -105,6 +121,23 @@ public class OptionController {
         try {
             String req = "SELECT * FROM options ";
             preparedStatement = connection.prepareStatement(req);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                listOptions.add(new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
+            }
+            return listOptions;
+        } catch (SQLException ex) {
+            Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public ArrayList<Option> getOptions(int id_filiere){
+        ArrayList<Option> listOptions = new ArrayList<>();
+        try {
+            String req = "SELECT * FROM options WHERE id_filiere = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, id_filiere);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){

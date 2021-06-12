@@ -134,7 +134,49 @@ public class EtudiantController {
         try {
             String req = "SELECT * FROM etudiants ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setBoolean(1, true);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                listEtudiant.add(new Etudiant(resultSet.getInt("id_etudiant"), resultSet.getInt("id_annee"), resultSet.getInt("id_nationalite"), resultSet.getInt("id_niveau"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("sexe"), resultSet.getString("photo"), resultSet.getString("mot_de_passe")));
+            }
+            return listEtudiant;
+        } catch (SQLException ex) {
+            Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<Etudiant> getEtudiants(String filiere){
+        ArrayList<Etudiant> listEtudiant = new ArrayList<>();
+        try {
+            String req = "SELECT * FROM etudiants JOIN niveaux ON "
+                    + "etudiants.id_niveau = niveaux.id_niveau JOIN options ON "
+                    + "niveau.id_option = options.id_option JOIN filieres ON "
+                    + "options.id_filiere = filieres.id_filiere WHERE filieres.filiere = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, filiere);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                listEtudiant.add(new Etudiant(resultSet.getInt("id_etudiant"), resultSet.getInt("id_annee"), resultSet.getInt("id_nationalite"), resultSet.getInt("id_niveau"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("sexe"), resultSet.getString("photo"), resultSet.getString("mot_de_passe")));
+            }
+            return listEtudiant;
+        } catch (SQLException ex) {
+            Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<Etudiant> getEtudiants(String filiere, String option){
+        ArrayList<Etudiant> listEtudiant = new ArrayList<>();
+        try {
+            String req = "SELECT * FROM etudiants JOIN niveaux ON "
+                    + "etudiants.id_niveau = niveaux.id_niveau JOIN options ON "
+                    + "niveau.id_option = options.id_option JOIN filieres ON "
+                    + "options.id_filiere = filieres.id_filiere WHERE filieres.filiere = ? AND options.option = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, filiere);
+            preparedStatement.setString(2, option);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){

@@ -99,11 +99,27 @@ public class FiliereController {
         return null;
     }
     
+    public Filiere getFiliere(String filiere){
+        try {
+            String req = "SELECT * FROM filieres WHERE filiere = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, filiere);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new Filiere(resultSet.getInt("id_filiere"), resultSet.getString("filiere"), resultSet.getString("sigle"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FiliereController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     /**
      *
      * @return
      */
-    public ArrayList<Filiere> getListFiliere(){
+    public ArrayList<Filiere> getFilieres(){
         ArrayList<Filiere> listFiliere = new ArrayList<>();
         try {
             String req = "SELECT * FROM filieres";

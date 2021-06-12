@@ -44,6 +44,7 @@ public class ProfesseurController {
      * @param diplome
      * @param sexe
      * @param mot_de_passe
+     * @param isActif
      */
     public void addProfesseur(int id_nationalite, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String titre, String diplome, String sexe, String mot_de_passe, boolean isActif){
         try {
