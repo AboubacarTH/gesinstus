@@ -47,28 +47,28 @@ public class OptionController {
 
     /**
      *
-     * @param id_option
+     * @param id
      * @param id_filiere
      * @param option
      */
-    public void updateOption(int id_option, int id_filiere, String option){
+    public void updateOption(int id, int id_filiere, String option){
         try {
-            String req = "UPDATE options SET id_filiere = ?, option = ? WHERE id_option = ? ";
+            String req = "UPDATE options SET id_filiere = ?, option = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setString(2, option);
-            preparedStatement.setInt(3, id_option);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void removeOption(int id_option){
+    public void removeOption(int id){
         try {
-            String req = "DELETE FROM options WHERE id_option = ? ";
+            String req = "DELETE FROM options WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_option);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,18 +77,18 @@ public class OptionController {
     
     /**
      *
-     * @param id_option
+     * @param id
      * @return
      */
-    public Option getOption(int id_option){
+    public Option getOption(int id){
         try {
-            String req = "SELECT * FROM options WHERE id_option = ? ";
+            String req = "SELECT * FROM options WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_option);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
+                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +104,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
+                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,7 +124,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listOptions.add(new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
+                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
             }
             return listOptions;
         } catch (SQLException ex) {
@@ -141,7 +141,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listOptions.add(new Option(resultSet.getInt("id_option"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
+                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
             }
             return listOptions;
         } catch (SQLException ex) {

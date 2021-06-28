@@ -42,23 +42,23 @@ public class UniteEnseignementController {
             Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void updateUniteEnseignement(int id_unite_enseignement, String sigle, String nom){
+    public void updateUniteEnseignement(int id, String sigle, String nom){
         try {
-            String req = "UPDATE unite_enseignements SET sigle = ?, nom = ? WHERE id_unite_enseignement = ? ";
+            String req = "UPDATE unite_enseignements SET sigle = ?, nom = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, sigle);
             preparedStatement.setString(2, nom);
-            preparedStatement.setInt(3, id_unite_enseignement);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void removeUniteEnseignement(int id_unite_enseignement){
+    public void removeUniteEnseignement(int id){
         try {
-            String req = "DELETE FROM unite_enseignements WHERE id_unite_enseignement = ? ";
+            String req = "DELETE FROM unite_enseignements WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_unite_enseignement);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,13 +66,13 @@ public class UniteEnseignementController {
     }
     public UniteEnseignement getUniteEnseignement(int id_unite_enseignement){
         try {
-            String req = "SELECT * FROM unite_enseignements WHERE id_unite_enseignement = ? ";
+            String req = "SELECT * FROM unite_enseignements WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_unite_enseignement);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new UniteEnseignement(resultSet.getInt("id_unite_enseignement"), resultSet.getString("sigle"), resultSet.getString("nom"));
+                return new UniteEnseignement(resultSet.getInt("id"), resultSet.getString("sigle"), resultSet.getString("nom"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,7 +87,7 @@ public class UniteEnseignementController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                list.add(new UniteEnseignement(resultSet.getInt("id_unite_enseignement"), resultSet.getString("sigle"), resultSet.getString("nom")));
+                list.add(new UniteEnseignement(resultSet.getInt("id"), resultSet.getString("sigle"), resultSet.getString("nom")));
             }
             return list;
         } catch (SQLException ex) {

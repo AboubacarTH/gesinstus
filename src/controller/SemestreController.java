@@ -51,19 +51,19 @@ public class SemestreController {
 
     /**
      *
-     * @param id_semestre
+     * @param id
      * @param id_niveau
      * @param semestre
      * @param priorite
      */
-    public void updateSemestre(int id_semestre, int id_niveau, String semestre, int priorite){
+    public void updateSemestre(int id, int id_niveau, String semestre, int priorite){
         try {
-            String req = "UPDATE semestres SET id_niveau = ?, semestre = ?, priorite = ? WHERE id_semestre = ? ";
+            String req = "UPDATE semestres SET id_niveau = ?, semestre = ?, priorite = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_niveau);
             preparedStatement.setString(2, semestre);
             preparedStatement.setInt(3, priorite);
-            preparedStatement.setInt(4, id_semestre);
+            preparedStatement.setInt(4, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,13 +72,13 @@ public class SemestreController {
 
     /**
      *
-     * @param id_semestre
+     * @param id
      */
-    public void removeSemestre(int id_semestre){
+    public void removeSemestre(int id){
         try {
-            String req = "DELETE FROM semestres WHERE id_semestre = ? ";
+            String req = "DELETE FROM semestres WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_semestre);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,18 +87,18 @@ public class SemestreController {
     
     /**
      *
-     * @param id_semestre
+     * @param id
      * @return
      */
-    public Semestre getSemestre(int id_semestre){
+    public Semestre getSemestre(int id){
         try {
-            String req = "SELECT * FROM semestres WHERE id_semestre = ?";
+            String req = "SELECT * FROM semestres WHERE id = ?";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_semestre);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Semestre(resultSet.getInt("id_semestre"), resultSet.getInt("id_niveau"), resultSet.getString("semestre"), resultSet.getInt("priorite"));
+                return new Semestre(resultSet.getInt("id"), resultSet.getInt("id_niveau"), resultSet.getString("semestre"), resultSet.getInt("priorite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(SemestreController.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,7 +118,7 @@ public class SemestreController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listSemestre.add(new Semestre(resultSet.getInt("id_semestre"), resultSet.getInt("id_niveau"), resultSet.getString("semestre"), resultSet.getInt("priorite")));
+                listSemestre.add(new Semestre(resultSet.getInt("id"), resultSet.getInt("id_niveau"), resultSet.getString("semestre"), resultSet.getInt("priorite")));
             }
             return listSemestre;
         } catch (SQLException ex) {
