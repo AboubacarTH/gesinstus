@@ -15,6 +15,7 @@ public class Etudiant {
     private int id;
     private int id_annee;
     private int id_nationalite;
+    private int id_option;
     private int id_niveau;
     private String matricule;
     private String nom_prenom;
@@ -28,10 +29,11 @@ public class Etudiant {
     public Etudiant() {
     }
 
-    public Etudiant(int id, int id_annee, int id_nationalite, int id_niveau, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String sexe, String photo, String mot_de_passe) {
+    public Etudiant(int id, int id_annee, int id_nationalite, int id_option, int id_niveau, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String sexe, String photo, String mot_de_passe) {
         this.id = id;
         this.id_annee = id_annee;
         this.id_nationalite = id_nationalite;
+        this.id_option = id_option;
         this.id_niveau = id_niveau;
         this.matricule = matricule;
         this.nom_prenom = nom_prenom;
@@ -65,6 +67,14 @@ public class Etudiant {
 
     public void setId_nationalite(int id_nationalite) {
         this.id_nationalite = id_nationalite;
+    }
+
+    public int getId_option() {
+        return id_option;
+    }
+
+    public void setId_option(int id_option) {
+        this.id_option = id_option;
     }
 
     public int getId_niveau() {
