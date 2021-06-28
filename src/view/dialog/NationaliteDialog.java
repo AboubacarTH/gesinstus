@@ -110,6 +110,7 @@ public class NationaliteDialog extends javax.swing.JDialog {
                     rSMTextFull_nationalite.getText()
             );
         }
+        success_information();
         this.dispose();
     }//GEN-LAST:event_btn_validerActionPerformed
 
@@ -157,4 +158,7 @@ public class NationaliteDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private rojeru_san.RSMTextFull rSMTextFull_nationalite;
     // End of variables declaration//GEN-END:variables
+private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

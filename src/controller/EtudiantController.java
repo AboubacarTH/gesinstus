@@ -128,6 +128,21 @@ public class EtudiantController {
         }
         return null;
     }
+    public Etudiant getEtudiant(String matricule){
+        try {
+            String req = "SELECT * FROM etudiants WHERE matricule = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, matricule);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new Etudiant(resultSet.getInt("id"), resultSet.getInt("id_annee"), resultSet.getInt("id_nationalite"), resultSet.getInt("id_option"), resultSet.getInt("id_niveau"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("sexe"), resultSet.getString("photo"), resultSet.getString("mot_de_passe"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     /**
      *
