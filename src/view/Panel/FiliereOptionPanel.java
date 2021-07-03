@@ -5,29 +5,33 @@
  */
 package view.Panel;
 
-import bean.Filiere;
+import controller.EtudiantController;
 import controller.FiliereController;
-import controller.OptionsController;
-import dialog.OptionDialog;
+import controller.OptionController;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import rojerusan.RSPanelImage;
+import view.dialog.FiliereDialog;
+import view.dialog.OptionDialog;
 
 /**
  *
  * @author ATH
  */
-public class FilierePan extends RSPanelImage {
+public class FiliereOptionPanel extends RSPanelImage {
 
     /**
      * Creates new form ElevePan
      */
-    public FilierePan() {
+    public FiliereOptionPanel() {
         filiereController = new FiliereController();
-        optionsController = new OptionsController();
+        optionController = new OptionController();
+        etudiantController = new EtudiantController();
         initComponents();
         update_table_filiere();
         update_table_option();
@@ -101,7 +105,7 @@ public class FilierePan extends RSPanelImage {
         setImagen(new javax.swing.ImageIcon(getClass().getResource("/icon/getty_655998316_2000149920009280219_363765.jpg"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1100, 700));
 
-        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED), "Liste des filières", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 102, 102), new java.awt.Color(52, 52, 255)), "Liste des filières", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jScrollPane3MouseReleased(evt);
@@ -212,13 +216,13 @@ public class FilierePan extends RSPanelImage {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_item_add_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_filiereActionPerformed
-        dialog.FiliereDialog classe = new dialog.FiliereDialog(null, true);
+        FiliereDialog classe = new FiliereDialog(null, true);
         classe.setVisible(true);
         update_table_filiere();
     }//GEN-LAST:event_menu_item_add_filiereActionPerformed
 
     private void menu_item_update_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_filiereActionPerformed
-        dialog.FiliereDialog filiere = new dialog.FiliereDialog(null, true, new Filiere(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 1).toString().split("/")[0].trim()));
+        FiliereDialog filiere = new FiliereDialog(null, true, filiereController.getFiliere(Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString())));
         filiere.setVisible(true);
         update_table_filiere();
     }//GEN-LAST:event_menu_item_update_filiereActionPerformed
@@ -226,7 +230,7 @@ public class FilierePan extends RSPanelImage {
     private void menu_item_remove_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_filiereActionPerformed
         int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer la filière " + jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 1) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
         if(choice == 0){
-            //filiereDAO.removeFiliere(filiereDAO.getFiliere((int) jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3)));
+            filiereController.removeFiliere(Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString()));
         }
         update_table_filiere();
     }//GEN-LAST:event_menu_item_remove_filiereActionPerformed
@@ -311,22 +315,17 @@ public class FilierePan extends RSPanelImage {
     }//GEN-LAST:event_jScrollPane1MouseReleased
 
     private void menu_item_add_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_optionActionPerformed
-        if(jTable_filiere.getSelectedRow() >= 0){
-            dialog.OptionDialog option = new OptionDialog(null, true, filiereController.getFiliere(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 1).toString()));
-            option.setVisible(true);
-        }else{
-            dialog.OptionDialog option = new OptionDialog(null, true);
-            option.setVisible(true);
-        }
+        OptionDialog option = new OptionDialog(null, true);
+        option.setVisible(true);
         update_table_option();
     }//GEN-LAST:event_menu_item_add_optionActionPerformed
 
     private void menu_item_update_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_optionActionPerformed
         if(jTable_filiere.getSelectedRow() >= 0 && jTable_option.getSelectedRow() >= 0){
-            dialog.OptionDialog option = new OptionDialog(null, true, optionsController.getOption(jTable_option.getValueAt(jTable_option.getSelectedRow(), 3).toString(),jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString()));
+            OptionDialog option = new OptionDialog(null, true, optionController.getOption(Integer.parseInt(jTable_option.getValueAt(jTable_option.getSelectedRow(), 3).toString())));
             option.setVisible(true);
         }else{
-            dialog.OptionDialog option = new OptionDialog(null, true);
+            OptionDialog option = new OptionDialog(null, true);
             option.setVisible(true);
         }
         update_table_option();
@@ -350,7 +349,8 @@ public class FilierePan extends RSPanelImage {
     }//GEN-LAST:event_jTable_filiereMouseClicked
 
     private final FiliereController filiereController;
-    private final OptionsController optionsController;
+    private final OptionController optionController;
+    private final EtudiantController etudiantController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
@@ -374,14 +374,14 @@ public class FilierePan extends RSPanelImage {
         String entete[] = {"N°", "FILIERE", "EFFECTIF", "ID"};
         DefaultTableModel dt = new DefaultTableModel(null,entete);
         dt.setRowCount(0);
-        ArrayList<bean.Filiere> list_filiere = filiereController.getListFiliere();
+        ArrayList<bean.Filiere> list_filiere = filiereController.getFilieres();
 
         for(int i = 0; i< list_filiere.size(); i++){
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
             colonne[1] = list_filiere.get(i).getFiliere();
-            colonne[2] = filiereController.getFiliereEtudiantCount(list_filiere.get(i), true);
-            colonne[3] = list_filiere.get(i).getFiliere();
+            colonne[2] = etudiantController.getEtudiants(list_filiere.get(i).getId()).size();
+            colonne[3] = list_filiere.get(i).getId();
             dt.addRow(colonne);
         }
         this.jTable_filiere.setModel(dt);
@@ -392,31 +392,34 @@ public class FilierePan extends RSPanelImage {
             jTable_filiere.getColumnModel().getColumn(2).setMinWidth(150);
             jTable_filiere.getColumnModel().getColumn(2).setPreferredWidth(150);
             jTable_filiere.getColumnModel().getColumn(2).setMaxWidth(150);
-            jTable_filiere.getColumnModel().getColumn(3).setMinWidth(10);
-            jTable_filiere.getColumnModel().getColumn(3).setPreferredWidth(10);
-            jTable_filiere.getColumnModel().getColumn(3).setMaxWidth(10);
+            jTable_filiere.getColumnModel().getColumn(3).setMinWidth(5);
+            jTable_filiere.getColumnModel().getColumn(3).setPreferredWidth(5);
+            jTable_filiere.getColumnModel().getColumn(3).setMaxWidth(5);
 //            jTable_filiere.getModel().addTableModelListener((TableModelEvent e) -> {
 //                update_table_option();
 //            });
             jTable_filiere.setRowHeight(30);
+            jTable_filiere.getTableHeader().setBackground(new Color(0,112,192));
+            jTable_filiere.getTableHeader().setForeground(Color.white);
+            jTable_filiere.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
         }
     }
     private void update_table_option(){
         String entete[] = {"N°", "FILIERE/OPTION", "EFFECTIF", "ID"};
         DefaultTableModel dt = new DefaultTableModel(null,entete);
         dt.setRowCount(0);
-        String filiere = null;
+        int id_filiere = 0;
         if(jTable_filiere.getSelectedRow() > -1){
-            filiere = jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 1).toString();
+            id_filiere = Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString());
         }
-        ArrayList<bean.Options> list_option = optionsController.getListOptions(filiere);
+        ArrayList<bean.Option> list_option = optionController.getOptions(id_filiere);
         
         for(int i = 0; i< list_option.size(); i++){
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
-            colonne[1] = list_option.get(i).getFiliere() + " / " + list_option.get(i).getOptions();
-            colonne[2] = optionsController.getOptionEtudiantCount(list_option.get(i));
-            colonne[3] = list_option.get(i).getOptions();
+            colonne[1] = filiereController.getFiliere(list_option.get(i).getId()).getFiliere() + " / " + list_option.get(i).getOption();
+            colonne[2] = etudiantController.getEtudiants(id_filiere, list_option.get(i).getId()).size();
+            colonne[3] = list_option.get(i).getId();
             dt.addRow(colonne);
         }
         this.jTable_option.setModel(dt);
@@ -428,10 +431,13 @@ public class FilierePan extends RSPanelImage {
             jTable_option.getColumnModel().getColumn(2).setMinWidth(150);
             jTable_option.getColumnModel().getColumn(2).setPreferredWidth(150);
             jTable_option.getColumnModel().getColumn(2).setMaxWidth(150);
-            jTable_option.getColumnModel().getColumn(3).setMinWidth(10);
-            jTable_option.getColumnModel().getColumn(3).setPreferredWidth(10);
-            jTable_option.getColumnModel().getColumn(3).setMaxWidth(10);
+            jTable_option.getColumnModel().getColumn(3).setMinWidth(5);
+            jTable_option.getColumnModel().getColumn(3).setPreferredWidth(5);
+            jTable_option.getColumnModel().getColumn(3).setMaxWidth(5);
             jTable_option.setRowHeight(30);
+            jTable_option.getTableHeader().setBackground(new Color(0,112,192));
+            jTable_option.getTableHeader().setForeground(Color.white);
+            jTable_option.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
         }
     }
     

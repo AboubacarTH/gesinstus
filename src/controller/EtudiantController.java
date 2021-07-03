@@ -169,7 +169,7 @@ public class EtudiantController {
         ArrayList<Etudiant> listEtudiant = new ArrayList<>();
         try {
             String req = "SELECT * FROM etudiants JOIN options ON "
-                    + "etudiant.id_option = options.id_option WHERE options.id_filiere = ? ";
+                    + "etudiants.id_option = options.id WHERE options.id_filiere = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.execute();
@@ -183,15 +183,54 @@ public class EtudiantController {
         }
         return null;
     }
-    
     public ArrayList<Etudiant> getEtudiants(int id_filiere, int id_option){
         ArrayList<Etudiant> listEtudiant = new ArrayList<>();
         try {
             String req = "SELECT * FROM etudiants JOIN options ON "
-                    + "etudiant.id_option = options.id_option WHERE options.id_filiere = ? AND options.id = ? ";
+                    + "etudiants.id_option = options.id WHERE options.id_filiere = ? AND options.id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setInt(2, id_option);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                listEtudiant.add(new Etudiant(resultSet.getInt("id"), resultSet.getInt("id_annee"), resultSet.getInt("id_nationalite"), resultSet.getInt("id_option"), resultSet.getInt("id_niveau"), resultSet.getString("matricule"), resultSet.getString("nom_prenom"), resultSet.getDate("date_de_naissance"), resultSet.getString("lieu_de_naissance"), resultSet.getString("contact"), resultSet.getString("sexe"), resultSet.getString("photo"), resultSet.getString("mot_de_passe")));
+            }
+            return listEtudiant;
+        } catch (SQLException ex) {
+            Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<Etudiant> getEtudiants(int id_annee, int id_filiere, int id_option, int id_nationalite, int id_niveau, String sexe, String recherche){
+        ArrayList<Etudiant> listEtudiant = new ArrayList<>();
+        try {
+            String req = "SELECT * FROM etudiants JOIN options ON "
+                    + "etudiants.id_option = options.id WHERE ";
+            if(id_annee != 0){
+                req += "etudiants.id_annee = '" + id_annee + "' ";
+            }
+            if(id_filiere != 0){
+                req += "AND options.id_filiere = '" + id_filiere + "' ";
+            }
+            if(id_option != 0){
+                req += "AND options.id = '" + id_option + "' ";
+            }
+            if(id_nationalite != 0){
+                req += "AND etudiants.id_nationalite = '" + id_nationalite + "' ";
+            }
+            if(id_niveau != 0){
+                req += "AND etudiants.id_niveau = '" + id_niveau + "' ";
+            }
+            if(sexe != null && !"Tous".equals(sexe)){
+                req += "AND etudiants.sexe = '" + sexe + "' ";
+            }
+            if(recherche != null){
+                req += "AND etudiants.nom_prenom LIKE '%" + recherche + "%' ";
+                req += "OR etudiants.matricule LIKE '%" + recherche + "%' ";
+            }
+            preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
@@ -217,5 +256,20 @@ public class EtudiantController {
         } catch (SQLException ex) {
             Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public int getMaxID(){
+        try {
+            String req = "SELECT MAX(id) AS max FROM etudiants ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return resultSet.getInt("max");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

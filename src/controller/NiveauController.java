@@ -129,7 +129,7 @@ public class NiveauController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listNiveau.add(new Niveau(resultSet.getInt("id_niveau"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
+                listNiveau.add(new Niveau(resultSet.getInt("id"), resultSet.getString("niveau"), resultSet.getInt("priorite")));
             }
             return listNiveau;
         } catch (SQLException ex) {

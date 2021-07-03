@@ -35,7 +35,7 @@ public class OptionController {
      */
     public void addOption(int id_filiere, String option){
         try {
-            String req = "INSERT INTO options (id_filiere, option) VALUES (?, ?)";
+            String req = "INSERT INTO options (id_filiere, libelle) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setString(2, option);
@@ -53,7 +53,7 @@ public class OptionController {
      */
     public void updateOption(int id, int id_filiere, String option){
         try {
-            String req = "UPDATE options SET id_filiere = ?, option = ? WHERE id = ? ";
+            String req = "UPDATE options SET id_filiere = ?, libelle = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setString(2, option);
@@ -88,7 +88,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
+                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("libelle"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,14 +97,14 @@ public class OptionController {
     }
     public Option getOption(int id_filiere, String option){
         try {
-            String req = "SELECT * FROM options WHERE id_filiere = ? AND option = ? ";
+            String req = "SELECT * FROM options WHERE id_filiere = ? AND libelle = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setString(2, option);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option"));
+                return new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("libelle"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(OptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,7 +124,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
+                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("libelle")));
             }
             return listOptions;
         } catch (SQLException ex) {
@@ -141,7 +141,7 @@ public class OptionController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("option")));
+                listOptions.add(new Option(resultSet.getInt("id"), resultSet.getInt("id_filiere"), resultSet.getString("libelle")));
             }
             return listOptions;
         } catch (SQLException ex) {

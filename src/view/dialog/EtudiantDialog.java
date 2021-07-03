@@ -7,15 +7,23 @@ package view.dialog;
 
 import bean.Etudiant;
 import bean.Filiere;
-import bean.Option;
 import controller.AnneeController;
 import controller.EtudiantController;
 import controller.FiliereController;
 import controller.NationaliteController;
 import controller.NiveauController;
 import controller.OptionController;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -60,13 +68,14 @@ public class EtudiantDialog extends javax.swing.JDialog {
         initCbOption();
         initCbNationalite();
         try {
-            Filiere filiere = filiereController.getFiliere(optionController.getOption(niveauController.getNiveau(this.etudiant.getId_niveau()).getId_option()).getId_filiere());
-            Option option = optionController.getOption(niveauController.getNiveau(this.etudiant.getId_niveau()).getId_option());
             rSComboMetro_annee.setSelectedItem(anneeController.getAnnee(this.etudiant.getId_annee()).getAnnee());
-            rSComboMetro_filiere.setSelectedItem(filiere.getFiliere());
-            rSComboMetro_option.setSelectedItem(option.getOption());
+            rSComboMetro_filiere.setSelectedItem(filiereController.getFiliere(optionController.getOption(this.etudiant.getId_option()).getId_filiere()).getFiliere());
+            rSComboMetro_option.setSelectedItem(optionController.getOption(this.etudiant.getId_option()).getOption());
             rSbComboMetro_nationalite.setSelectedItem(nationaliteController.getNationalite(this.etudiant.getId_nationalite()));
             rSComboMetro_sexe.setSelectedItem(etudiant.getSexe());
+            if(this.etudiant.getPhoto() != null){
+                jLabel_photo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/" + this.etudiant.getPhoto())));
+            }
         } catch (Exception e) {
         }
         
@@ -110,6 +119,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         rSComboMetro_option = new rojerusan.RSComboMetro();
         rSComboMetro_niveau = new rojerusan.RSComboMetro();
+        jLabel_photo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion des étudiants");
@@ -169,6 +179,21 @@ public class EtudiantDialog extends javax.swing.JDialog {
 
         jLabel11.setText("Niveau :");
 
+        jLabel_photo.setBackground(new java.awt.Color(51, 153, 255));
+        jLabel_photo.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel_photo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_photo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/approval.png"))); // NOI18N
+        jLabel_photo.setToolTipText("Choisir une photo");
+        jLabel_photo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel_photo.setMaximumSize(new java.awt.Dimension(122, 118));
+        jLabel_photo.setMinimumSize(new java.awt.Dimension(122, 118));
+        jLabel_photo.setPreferredSize(new java.awt.Dimension(122, 118));
+        jLabel_photo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_photoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -188,7 +213,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
                             .addComponent(rSMTextFull_contact, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(rSbComboMetro_nationalite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                    .addComponent(rSbComboMetro_nationalite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jDateChooser_date_de_naissance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,15 +244,18 @@ public class EtudiantDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rSMTextFull_nom_prenom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rSMTextFull_matricule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rSComboMetro_filiere, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(rSComboMetro_option, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(rSComboMetro_option, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rSComboMetro_filiere, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel_photo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
@@ -238,19 +266,22 @@ public class EtudiantDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rSComboMetro_filiere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rSComboMetro_option, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rSComboMetro_filiere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rSComboMetro_option, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)))
+                    .addComponent(jLabel_photo, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rSMTextFull_matricule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,16 +325,17 @@ public class EtudiantDialog extends javax.swing.JDialog {
             if(etudiant == null){
                 java.sql.Date date = (java.sql.Date) new Date(jDateChooser_date_de_naissance.getDate().getTime());
                 etudiantController.addEtudiant(
-                        anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(), 
-                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(), 
-                        niveauController.getNiveau(optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(), rSComboMetro_niveau.getSelectedItem().toString()).getId(), 
-                        rSMTextFull_matricule.getText(), 
-                        rSMTextFull_nom_prenom.getText(), 
-                        date, 
-                        rSMTextFull_lieu_de_naissance.getText(), 
-                        rSMTextFull_contact.getText(), 
-                        rSComboMetro_sexe.getSelectedItem().toString(), 
-                        null, 
+                        anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(),
+                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(),
+                        optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(),
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        rSMTextFull_matricule.getText(),
+                        rSMTextFull_nom_prenom.getText(),
+                        date,
+                        rSMTextFull_lieu_de_naissance.getText(),
+                        rSMTextFull_contact.getText(),
+                        rSComboMetro_sexe.getSelectedItem().toString(),
+                        photo,
                         null
                 );
                 
@@ -311,19 +343,21 @@ public class EtudiantDialog extends javax.swing.JDialog {
                 java.sql.Date date = (java.sql.Date) new Date(jDateChooser_date_de_naissance.getDate().getTime());
                 etudiantController.updateEtudiant(
                         etudiant.getId(),
-                        anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(), 
-                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(), 
-                        niveauController.getNiveau(optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(), rSComboMetro_niveau.getSelectedItem().toString()).getId(), 
-                        rSMTextFull_matricule.getText(), 
-                        rSMTextFull_nom_prenom.getText(), 
-                        date, 
-                        rSMTextFull_lieu_de_naissance.getText(), 
-                        rSMTextFull_contact.getText(), 
-                        rSComboMetro_sexe.getSelectedItem().toString(), 
-                        null, 
+                        anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(),
+                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(),
+                        optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(),
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        rSMTextFull_matricule.getText(),
+                        rSMTextFull_nom_prenom.getText(),
+                        date,
+                        rSMTextFull_lieu_de_naissance.getText(),
+                        rSMTextFull_contact.getText(),
+                        rSComboMetro_sexe.getSelectedItem().toString(),
+                        photo,
                         null
                 );
             }
+            success_information();
             this.dispose();
         }
     }//GEN-LAST:event_btn_validerActionPerformed
@@ -331,6 +365,10 @@ public class EtudiantDialog extends javax.swing.JDialog {
     private void rSComboMetro_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_filiereActionPerformed
         initCbOption();
     }//GEN-LAST:event_rSComboMetro_filiereActionPerformed
+
+    private void jLabel_photoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_photoMouseClicked
+        saving_image();
+    }//GEN-LAST:event_jLabel_photoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -378,6 +416,8 @@ public class EtudiantDialog extends javax.swing.JDialog {
     private final OptionController optionController;
     private final AnneeController anneeController;
     private final NiveauController niveauController;
+    private String photo;
+    private static String PHOTO_DIR = "/photo/";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojeru_san.RSButton btn_valider;
     private com.toedter.calendar.JDateChooser jDateChooser_date_de_naissance;
@@ -392,6 +432,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel_photo;
     private rojerusan.RSComboMetro rSComboMetro_annee;
     private rojerusan.RSComboMetro rSComboMetro_filiere;
     private rojerusan.RSComboMetro rSComboMetro_niveau;
@@ -437,7 +478,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
             return;
         }
         String filiere = rSComboMetro_filiere.getSelectedItem().toString();
-        int rang = etudiantController.getEtudiants(filiere).size() + 1;
+        int rang = etudiantController.getMaxID() + 1;
         String matricule = String.format("%03d", rang) + "/" + filiereController.getFiliere(filiere).getSigle();
         rSMTextFull_matricule.setText(matricule);
     }
@@ -454,5 +495,33 @@ public class EtudiantDialog extends javax.swing.JDialog {
             rSComboMetro_niveau.addItem(n.getNiveau());
         });
         initMatricule();
+    }
+    
+    private void saving_image() {
+        JFileChooser fileChooser = new JFileChooser();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
+
+        fileChooser.setDialogTitle("Choisir la photo");
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image files", new String[] { "png", "jpg", "jpeg" }));
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+        try {
+          Image image = ImageIO.read(fileChooser.getSelectedFile());
+          File source = new File(fileChooser.getSelectedFile().getAbsolutePath());
+          if (image != null) {
+            String extension = FilenameUtils.getExtension(fileChooser.getSelectedFile().getName());
+            File des = new File(PHOTO_DIR + rSMTextFull_matricule.getText().replaceAll("/", "-") + "." + extension);
+            FileUtils.copyFile(source, des);
+            photo = PHOTO_DIR + rSMTextFull_matricule.getText().replaceAll("/", "-") + "." + extension;
+            if(photo != null){
+                jLabel_photo.setIcon(new ImageIcon(photo));
+            }
+          }
+        } catch (IOException ex) {
+        }
+      }
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

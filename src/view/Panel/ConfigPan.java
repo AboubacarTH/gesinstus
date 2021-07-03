@@ -8,11 +8,11 @@ package view.Panel;
 import controller.AnneeController;
 import controller.NationaliteController;
 import controller.ParametreController;
-import dialog.AnneeDialog;
 import java.util.ArrayList;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import rojerusan.RSPanelImage;
+import view.dialog.AnneeDialog;
 import view.dialog.NationaliteDialog;
 
 /**

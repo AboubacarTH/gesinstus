@@ -158,7 +158,7 @@ public class NationaliteDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private rojeru_san.RSMTextFull rSMTextFull_nationalite;
     // End of variables declaration//GEN-END:variables
-private void success_information() {
+    private void success_information() {
         JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

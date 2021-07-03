@@ -6,18 +6,23 @@
 package view.Panel;
 
 import bean.Etudiant;
-import controller.AnneeScolaireController;
+import bean.Nationalite;
+import controller.AnneeController;
 import controller.EtudiantController;
 import controller.FiliereController;
 import controller.NationaliteController;
-import controller.OptionsController;
-import dialog.Detail;
+import controller.NiveauController;
+import controller.OptionController;
+import controller.ParametreController;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import rojerusan.RSPanelImage;
+import view.dialog.EtudiantDialog;
 
 /**
  *
@@ -32,14 +37,17 @@ public class EtudiantPan extends RSPanelImage {
         etudiantController = new EtudiantController();
         nationaliteController = new NationaliteController();
         filiereController = new FiliereController();
-        optionsController = new OptionsController();
-        anneeScolaireController = new AnneeScolaireController();
+        optionController = new OptionController();
+        niveauController = new NiveauController();
+        anneeController = new AnneeController();
+        ParametreController parametreController = new ParametreController();
         initComponents();
-        initCbAnneeScolaire();
+        initCbAnnee();
         try {
-            rSComboMetro_annee.setSelectedItem(anneeScolaireController.getAnneeScolaireEnCours().getAnnee());
+            //rSComboMetro_annee.setSelectedItem(anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
         } catch (Exception e) {
         }
+        initCBNiveau();
         initCbFiliere();
         initCbOption();
         initCbNationalite();
@@ -70,6 +78,8 @@ public class EtudiantPan extends RSPanelImage {
         rSComboMetro_sexe = new rojerusan.RSComboMetro();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        rSComboMetro_niveau = new rojerusan.RSComboMetro();
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         rSComboMetro_filiere = new rojerusan.RSComboMetro();
         rSComboMetro_option = new rojerusan.RSComboMetro();
@@ -122,7 +132,7 @@ public class EtudiantPan extends RSPanelImage {
         setImagen(new javax.swing.ImageIcon(getClass().getResource("/icon/getty_655998316_2000149920009280219_363765.jpg"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1100, 579));
 
-        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 102, 102), new java.awt.Color(51, 102, 255)), "Liste des étudiants", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 102, 102), new java.awt.Color(51, 102, 255)), "Liste des étudiants", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jScrollPane3MouseReleased(evt);
@@ -209,6 +219,8 @@ public class EtudiantPan extends RSPanelImage {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Nationalité");
 
+        jLabel6.setText("Niveau");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -216,17 +228,24 @@ public class EtudiantPan extends RSPanelImage {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(rSComboMetro_nationalite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rSComboMetro_sexe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(rSComboMetro_nationalite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rSComboMetro_sexe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -244,7 +263,11 @@ public class EtudiantPan extends RSPanelImage {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rSComboMetro_sexe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap())
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -281,14 +304,13 @@ public class EtudiantPan extends RSPanelImage {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel3)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(rSComboMetro_filiere, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
@@ -336,7 +358,7 @@ public class EtudiantPan extends RSPanelImage {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -345,8 +367,8 @@ public class EtudiantPan extends RSPanelImage {
         // TODO add your handling code here:
         int row = jTable_etudiant.getSelectedRow();
         String matricule = jTable_etudiant.getValueAt(row, 8).toString();
-        Detail detail = new Detail(null, true, etudiantController.getEtudiant(matricule));
-        detail.setVisible(true);
+//        Detail detail = new Detail(null, true, etudiantController.getEtudiant(matricule));
+//        detail.setVisible(true);
     }//GEN-LAST:event_menu_item_detailActionPerformed
 
     private void menu_item_smsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_smsActionPerformed
@@ -362,15 +384,15 @@ public class EtudiantPan extends RSPanelImage {
     }//GEN-LAST:event_menu_item_smsActionPerformed
 
     private void menu_item_add_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_etudiantActionPerformed
-        dialog.EtudiantDialog etudiant = new dialog.EtudiantDialog(null, true);
+        EtudiantDialog etudiant = new EtudiantDialog(null, true);
         etudiant.setVisible(true);
         update_table();
     }//GEN-LAST:event_menu_item_add_etudiantActionPerformed
 
     private void menu_item_update_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_etudiantActionPerformed
         int row = jTable_etudiant.getSelectedRow();
-        String matricule = jTable_etudiant.getValueAt(row, 8).toString();
-        dialog.EtudiantDialog etudiant = new dialog.EtudiantDialog(null, true,matricule);
+        int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
+        EtudiantDialog etudiant = new EtudiantDialog(null, true, etudiantController.getEtudiant(id));
         etudiant.setVisible(true);
         update_table();
     }//GEN-LAST:event_menu_item_update_etudiantActionPerformed
@@ -378,7 +400,9 @@ public class EtudiantPan extends RSPanelImage {
     private void menu_item_remove_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_etudiantActionPerformed
         int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'étudiant " + jTable_etudiant.getValueAt(jTable_etudiant.getSelectedRow(), 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
         if(choice == 0){
-            etudiantController.removeEtudiant(jTable_etudiant.getValueAt(jTable_etudiant.getSelectedRow(), 8).toString());
+            int row = jTable_etudiant.getSelectedRow();
+            int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
+            etudiantController.removeEtudiant(id);
         }
         update_table();
     }//GEN-LAST:event_menu_item_remove_etudiantActionPerformed
@@ -465,14 +489,16 @@ public class EtudiantPan extends RSPanelImage {
     private final EtudiantController etudiantController;
     private final NationaliteController nationaliteController;
     private final FiliereController filiereController;
-    private final OptionsController optionsController;
-    private final AnneeScolaireController anneeScolaireController;
+    private final OptionController optionController;
+    private final NiveauController niveauController;
+    private final AnneeController anneeController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
@@ -487,6 +513,7 @@ public class EtudiantPan extends RSPanelImage {
     private rojerusan.RSComboMetro rSComboMetro_annee;
     private rojerusan.RSComboMetro rSComboMetro_filiere;
     private rojerusan.RSComboMetro rSComboMetro_nationalite;
+    private rojerusan.RSComboMetro rSComboMetro_niveau;
     private rojerusan.RSComboMetro rSComboMetro_option;
     private rojerusan.RSComboMetro rSComboMetro_sexe;
     private rojeru_san.RSMTextFull rSMTextFull_recherche;
@@ -494,14 +521,14 @@ public class EtudiantPan extends RSPanelImage {
 
     private void initCbNationalite() {
         rSComboMetro_nationalite.removeAllItems();
-        int size = nationaliteController.getListNationalite().size();
+        int size = nationaliteController.getNationalites().size();
         if(size > 1){
             rSComboMetro_nationalite.addItem("Toutes");
-            nationaliteController.getListNationalite().forEach((n) -> {
+            nationaliteController.getNationalites().forEach((n) -> {
                 rSComboMetro_nationalite.addItem(n.getNationalite());
             });
         }else if(size > 0){
-            nationaliteController.getListNationalite().forEach((n) -> {
+            nationaliteController.getNationalites().forEach((n) -> {
                 rSComboMetro_nationalite.addItem(n.getNationalite());
             });
         }
@@ -509,7 +536,7 @@ public class EtudiantPan extends RSPanelImage {
 
     private void initCbFiliere(){
         rSComboMetro_filiere.removeAllItems();
-        filiereController.getListFiliere().forEach((f) -> {
+        filiereController.getFilieres().forEach((f) -> {
             rSComboMetro_filiere.addItem(f.getFiliere());
         });
         if(rSComboMetro_filiere.getItemCount() > 1){
@@ -526,26 +553,33 @@ public class EtudiantPan extends RSPanelImage {
         DefaultTableModel dt=new DefaultTableModel(null,entete);
         dt.setRowCount(0);
         
-        String annee = null, rechercher = null, nationalite = null, sexe = null, option = null, filiere = null;
+        int id_annee = 0, id_nationalite = 0, id_option = 0, id_filiere = 0, id_niveau = 0;
+        String rechercher = null, sexe = null;
         if(rSComboMetro_annee.getSelectedIndex() > -1){
-            annee = rSComboMetro_annee.getSelectedItem().toString();
+            id_annee = anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId();
         }
         if(rSMTextFull_recherche.getText().length() > 0){
             rechercher = rSMTextFull_recherche.getText();
         }
         if(rSComboMetro_nationalite.getSelectedIndex() > -1){
-            nationalite = rSComboMetro_nationalite.getSelectedItem().toString();
+            Nationalite nationalite = nationaliteController.getNationalite(rSComboMetro_nationalite.getSelectedItem().toString());
+            if(nationalite != null){
+                id_nationalite = nationalite.getId();
+            }
         }
         if(rSComboMetro_sexe.getSelectedIndex() > -1){
             sexe = rSComboMetro_sexe.getSelectedItem().toString();
         }
         if(rSComboMetro_option.getSelectedIndex() > -1){
-            option = rSComboMetro_option.getSelectedItem().toString();
+            id_option = optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId();
         }
         if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            filiere = rSComboMetro_filiere.getSelectedItem().toString();
+            id_filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId();
         }
-        ArrayList<Etudiant> list_etudiant = etudiantController.getListEtudiant(rechercher, nationalite, sexe, option, filiere, annee);
+        if(rSComboMetro_niveau.getSelectedIndex() > -1){
+            id_niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId();
+        }
+        ArrayList<Etudiant> list_etudiant = etudiantController.getEtudiants(id_annee, id_filiere, id_option, id_nationalite, id_niveau, sexe, rechercher);
         
         for(int i = 0; i< list_etudiant.size(); i++){
             Object colonne[] = new Object[9];
@@ -555,9 +589,9 @@ public class EtudiantPan extends RSPanelImage {
             colonne[3] = list_etudiant.get(i).getSexe();
             colonne[4] = list_etudiant.get(i).getDate_de_naissance();
             colonne[5] = list_etudiant.get(i).getLieu_de_naissance();
-            colonne[6] = list_etudiant.get(i).getNationalite();
+            colonne[6] = nationaliteController.getNationalite(list_etudiant.get(i).getId_nationalite()).getNationalite();
             colonne[7] = list_etudiant.get(i).getContact();
-            colonne[8] = list_etudiant.get(i).getMatricule();
+            colonne[8] = list_etudiant.get(i).getId();
             dt.addRow(colonne);
         }
         
@@ -588,26 +622,37 @@ public class EtudiantPan extends RSPanelImage {
             jTable_etudiant.getColumnModel().getColumn(8).setPreferredWidth(10);
             jTable_etudiant.getColumnModel().getColumn(8).setMaxWidth(10);
             jTable_etudiant.setRowHeight(30);
+            jTable_etudiant.getTableHeader().setBackground(new Color(0,112,192));
+            jTable_etudiant.getTableHeader().setForeground(Color.white);
+            jTable_etudiant.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
+            jTable_etudiant.setFont(new Font("Cambria Math", Font.BOLD, 12));
+            //jTable_etudiant.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         }
     }
 
     private void initCbOption() {
         rSComboMetro_option.removeAllItems();
-        String filiere = null;
+        int id_filiere = 0;
         if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            filiere = rSComboMetro_filiere.getSelectedItem().toString();
+            id_filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId();
         }
-        optionsController.getListOptions(filiere).forEach((o) -> {
-            rSComboMetro_option.addItem(o.getOptions());
+        optionController.getOptions(id_filiere).forEach((o) -> {
+            rSComboMetro_option.addItem(o.getOption());
         });
         if(rSComboMetro_option.getItemCount() > 1){
             rSComboMetro_option.addItem("Toutes");
         }
     }
-    private void initCbAnneeScolaire() {
+    private void initCbAnnee() {
         rSComboMetro_annee.removeAllItems();
-        anneeScolaireController.getListAnneeScolaire().forEach((a) -> {
+        anneeController.getAnnees().forEach((a) -> {
             rSComboMetro_annee.addItem(a.getAnnee());
+        });
+    }
+    private void initCBNiveau(){
+        rSComboMetro_niveau.removeAllItems();
+        niveauController.getNiveaux().forEach((n) -> {
+            rSComboMetro_niveau.addItem(n.getNiveau());
         });
     }
 }

@@ -2,6 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/ConfigPan.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/EtudiantPan.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/database/ConnecterDB.java</file>
+        </group>
     </open-files>
 </project-private>

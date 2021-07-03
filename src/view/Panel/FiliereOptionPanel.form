@@ -116,10 +116,12 @@
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Liste des fili&#xe8;res">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                <EtchetBorder bevelType="0"/>
+                <EtchetBorder bevelType="0">
+                  <Color PropertyName="highlight" blue="66" green="66" red="0" type="rgb"/>
+                  <Color PropertyName="shadow" blue="ff" green="34" red="34" type="rgb"/>
+                </EtchetBorder>
               </Border>
               <Font PropertyName="font" name="Tahoma" size="12" style="0"/>
-              <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>

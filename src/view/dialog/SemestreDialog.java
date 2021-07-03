@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dialog;
+package view.dialog;
 
 import controller.NiveauController;
 import controller.SemestreController;
@@ -141,11 +141,20 @@ public class SemestreDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(semestre == null){
-                semestreController.
-                semestreController.addSemestre(txt_semestre.getText(), rSComboMetro_niveau.getSelectedItem().toString(), (int) jSpinner_priorite.getValue());
+                semestreController.addSemestre(
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        txt_semestre.getText(),
+                        (int) jSpinner_priorite.getValue()
+                );
             }else{
-                semestreController.setSemestre(semestre, new bean.Semestre(txt_semestre.getText(), rSComboMetro_niveau.getSelectedItem().toString(), (int) jSpinner_priorite.getValue()));
+                semestreController.updateSemestre(
+                        semestre.getId(),
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        txt_semestre.getText(),
+                        (int) jSpinner_priorite.getValue()
+                );            
             }
+            success_information();
             this.dispose();
         }
     }//GEN-LAST:event_btn_validerActionPerformed
@@ -208,8 +217,11 @@ public class SemestreDialog extends javax.swing.JDialog {
 
     private void initCbNiveau() {
         rSComboMetro_niveau.removeAllItems();
-        niveauController.getListNiveau().forEach((n) -> {
+        niveauController.getNiveaux().forEach((n) -> {
             rSComboMetro_niveau.addItem(n.getNiveau());
         });
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

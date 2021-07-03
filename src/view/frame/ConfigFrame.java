@@ -7,7 +7,7 @@ package view.frame;
 
 import view.Panel.ConfigPan;
 import view.Panel.EtudiantPan;
-import view.Panel.FilierePan;
+import view.Panel.FiliereOptionPanel;
 import view.Panel.NotePan;
 import view.Panel.ProfesseurPanel;
 import view.Panel.UePan;
@@ -38,10 +38,10 @@ public class ConfigFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        menu_item_eleve = new javax.swing.JMenuItem();
-        menu_item_enseignant = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         menu_item_ue = new javax.swing.JMenuItem();
+        menu_item_eleve = new javax.swing.JMenuItem();
+        menu_item_enseignant = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menu_item_gestion_matiere = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -69,6 +69,22 @@ public class ConfigFrame extends javax.swing.JFrame {
 
         jMenu2.setText("Edition");
 
+        jMenuItem2.setText("Filière et Option");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        menu_item_ue.setText("Unité d'Enseignement");
+        menu_item_ue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_item_ueActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menu_item_ue);
+
         menu_item_eleve.setText("Etudiant");
         menu_item_eleve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,22 +100,6 @@ public class ConfigFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(menu_item_enseignant);
-
-        jMenuItem2.setText("Filière");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem2);
-
-        menu_item_ue.setText("Unité d'Enseignement");
-        menu_item_ue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_ueActionPerformed(evt);
-            }
-        });
-        jMenu2.add(menu_item_ue);
         jMenu2.add(jSeparator1);
 
         menu_item_gestion_matiere.setText("Gestion des notes");
@@ -176,7 +176,7 @@ public class ConfigFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        this.setContentPane(new FilierePan());
+        this.setContentPane(new FiliereOptionPanel());
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
