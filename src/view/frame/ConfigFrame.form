@@ -22,13 +22,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menu_item_ue">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Unit&#xe9; d&apos;Enseignement"/>
+                <Property name="text" type="java.lang.String" value="Unit&#xe9; d&apos;enseignement"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_ueActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem_ue_option">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Unit&#xe9; d&apos;enseignement par Option"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menu_item_eleve">
               <Properties>

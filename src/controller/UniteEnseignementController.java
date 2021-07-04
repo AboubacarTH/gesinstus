@@ -79,10 +79,44 @@ public class UniteEnseignementController {
         }
         return null;
     }
+    public UniteEnseignement getUniteEnseignement(String sigle){
+        try {
+            String req = "SELECT * FROM unite_enseignements WHERE sigle = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, sigle);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new UniteEnseignement(resultSet.getInt("id"), resultSet.getString("sigle"), resultSet.getString("nom"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public ArrayList<UniteEnseignement> getUniteEnseignements(){
         try {
             ArrayList<UniteEnseignement> list = new ArrayList<>();
             String req = "SELECT * FROM unite_enseignements ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                list.add(new UniteEnseignement(resultSet.getInt("id"), resultSet.getString("sigle"), resultSet.getString("nom")));
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(UniteEnseignementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public ArrayList<UniteEnseignement> getUniteEnseignements(String rechercher){
+        try {
+            ArrayList<UniteEnseignement> list = new ArrayList<>();
+            String req = "SELECT * FROM unite_enseignements WHERE id > 0 ";
+            if(rechercher != null){
+                req += "AND ( sigle LIKE '%" + rechercher + "%' OR nom LIKE '%" + rechercher + "%' ) ";
+            }
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();

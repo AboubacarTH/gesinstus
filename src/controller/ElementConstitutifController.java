@@ -85,10 +85,47 @@ public class ElementConstitutifController {
         }
         return null;
     }
+    public ElementConstitutif getElementConstitutif(String sigle){
+        try {
+            String req = "SELECT * FROM element_constitutifs WHERE sigle = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setString(1, sigle);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            if(resultSet.next()){
+                return new ElementConstitutif(resultSet.getInt("id"), resultSet.getInt("id_unite_enseignement"), resultSet.getString("sigle"), resultSet.getString("nom"), resultSet.getDouble("vhe"), resultSet.getDouble("credit"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ElementConstitutifController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public ArrayList<ElementConstitutif> getElementConstitutifs(){
         try {
             ArrayList<ElementConstitutif> list = new ArrayList<>();
             String req = "SELECT * FROM element_constitutifs ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                list.add(new ElementConstitutif(resultSet.getInt("id"), resultSet.getInt("id_unite_enseignement"), resultSet.getString("sigle"), resultSet.getString("nom"), resultSet.getDouble("vhe"), resultSet.getDouble("credit")));
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(ElementConstitutifController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public ArrayList<ElementConstitutif> getElementConstitutifs(int id_unite_enseignement, String rechercher){
+        try {
+            ArrayList<ElementConstitutif> list = new ArrayList<>();
+            String req = "SELECT * FROM element_constitutifs WHERE id > 0 ";
+            if(id_unite_enseignement != 0){
+                req += "AND id_unite_enseignement = '" + id_unite_enseignement + "' ";
+            }
+            if(rechercher != null){
+                req += "AND ( sigle LIKE '%" + rechercher + "%'  OR nom LIKE '" + rechercher + "%' ) ";
+            }
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();

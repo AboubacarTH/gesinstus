@@ -10,7 +10,7 @@ import view.panel.EtudiantPanel;
 import view.panel.FiliereOptionPanel;
 import view.panel.NotePan;
 import view.panel.ProfesseurPanel;
-import view.panel.UePan;
+import view.panel.UniteEnseignementElementConstitutifPanel;
 
 /**
  *
@@ -39,7 +39,10 @@ public class ConfigFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menu_item_ue = new javax.swing.JMenuItem();
+        jMenuItem_ue_option = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         menu_item_eleve = new javax.swing.JMenuItem();
         menu_item_enseignant = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -76,14 +79,19 @@ public class ConfigFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator2);
 
-        menu_item_ue.setText("Unité d'Enseignement");
+        menu_item_ue.setText("Unité d'enseignement");
         menu_item_ue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_item_ueActionPerformed(evt);
             }
         });
         jMenu2.add(menu_item_ue);
+
+        jMenuItem_ue_option.setText("Unité d'enseignement par Option");
+        jMenu2.add(jMenuItem_ue_option);
+        jMenu2.add(jSeparator3);
 
         menu_item_eleve.setText("Etudiant");
         menu_item_eleve.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +165,7 @@ public class ConfigFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_item_enseignantActionPerformed
 
     private void menu_item_ueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_ueActionPerformed
-        this.setContentPane(new UePan());
+        this.setContentPane(new UniteEnseignementElementConstitutifPanel());
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_menu_item_ueActionPerformed
@@ -220,7 +228,10 @@ public class ConfigFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem_ue_option;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem menu_item_eleve;
     private javax.swing.JMenuItem menu_item_enseignant;
     private javax.swing.JMenuItem menu_item_gestion_matiere;

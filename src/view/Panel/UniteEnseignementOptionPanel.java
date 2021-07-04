@@ -5,13 +5,12 @@
  */
 package view.panel;
 
-import controller.EcController;
+import controller.ElementConstitutifController;
 import controller.FiliereController;
 import controller.NiveauController;
-import controller.OptionsController;
+import controller.OptionController;
 import controller.SemestreController;
-import controller.UeController;
-import dialog.EcDialog;
+import controller.UniteEnseignementOptionController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -24,18 +23,18 @@ import rojerusan.RSPanelImage;
  *
  * @author ATH
  */
-public class UePan extends RSPanelImage {
+public class UniteEnseignementOptionPanel extends RSPanelImage {
 
     /**
      * Creates new form ElevePan
      */
-    public UePan() {
+    public UniteEnseignementOptionPanel() {
         filiereController = new FiliereController();
         semestreController = new SemestreController();
-        ueController = new UeController();
-        optionsController = new OptionsController();
+        uniteEnseignementOptionController = new UniteEnseignementOptionController();
+        optionController = new OptionController();
         niveauController = new NiveauController();
-        ecController = new EcController();
+        elementConstitutifController = new ElementConstitutifController();
         initComponents();
         initCbNiveau();
         initCbSemestre();
@@ -577,10 +576,10 @@ public class UePan extends RSPanelImage {
 
     private final FiliereController filiereController;
     private final SemestreController semestreController;
-    private final UeController ueController;
-    private final OptionsController optionsController;
+    private final UniteEnseignementOptionController uniteEnseignementOptionController;
+    private final OptionController optionController;
     private final NiveauController niveauController;
-    private final EcController ecController;
+    private final ElementConstitutifController elementConstitutifController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

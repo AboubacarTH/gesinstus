@@ -224,6 +224,12 @@ public class EtudiantPanel extends RSPanelImage {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Nationalité");
 
+        rSComboMetro_niveau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSComboMetro_niveauActionPerformed(evt);
+            }
+        });
+
         jLabel6.setText("Niveau");
 
         rSButtonRiple_ajouter_modifier.setText("AJOUTER");
@@ -471,6 +477,10 @@ public class EtudiantPanel extends RSPanelImage {
             modification_etudiant();
         }
     }//GEN-LAST:event_rSButtonRiple_ajouter_modifierActionPerformed
+
+    private void rSComboMetro_niveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_niveauActionPerformed
+        update_table();
+    }//GEN-LAST:event_rSComboMetro_niveauActionPerformed
 
     private final EtudiantController etudiantController;
     private final NationaliteController nationaliteController;
