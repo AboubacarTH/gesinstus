@@ -16,7 +16,7 @@ import controller.OptionController;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -74,7 +74,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
             rSbComboMetro_nationalite.setSelectedItem(nationaliteController.getNationalite(this.etudiant.getId_nationalite()));
             rSComboMetro_sexe.setSelectedItem(etudiant.getSexe());
             if(this.etudiant.getPhoto() != null){
-                jLabel_photo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/" + this.etudiant.getPhoto())));
+                jLabel_photo.setIcon(new ImageIcon(this.etudiant.getPhoto()));
             }
         } catch (Exception e) {
         }
@@ -323,7 +323,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(etudiant == null){
-                java.sql.Date date = (java.sql.Date) new Date(jDateChooser_date_de_naissance.getDate().getTime());
+                Date date = new Date(jDateChooser_date_de_naissance.getDate().getTime());
                 etudiantController.addEtudiant(
                         anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(),
                         nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(),
@@ -340,7 +340,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
                 );
                 
             }else{
-                java.sql.Date date = (java.sql.Date) new Date(jDateChooser_date_de_naissance.getDate().getTime());
+                Date date = new Date(jDateChooser_date_de_naissance.getDate().getTime());
                 etudiantController.updateEtudiant(
                         etudiant.getId(),
                         anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId(),
@@ -417,7 +417,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
     private final AnneeController anneeController;
     private final NiveauController niveauController;
     private String photo;
-    private static String PHOTO_DIR = "/photo/";
+    private static String PHOTO_DIR = "C:/GesInstus/ressources/photo/";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojeru_san.RSButton btn_valider;
     private com.toedter.calendar.JDateChooser jDateChooser_date_de_naissance;
@@ -478,8 +478,13 @@ public class EtudiantDialog extends javax.swing.JDialog {
             return;
         }
         String filiere = rSComboMetro_filiere.getSelectedItem().toString();
-        int rang = etudiantController.getMaxID() + 1;
+//        int rang = etudiantController.getMaxID() + 1;
+        int rang = 1;
         String matricule = String.format("%03d", rang) + "/" + filiereController.getFiliere(filiere).getSigle();
+        while(etudiantController.getEtudiant(matricule) != null){
+            rang++;
+            matricule = String.format("%03d", rang) + "/" + filiereController.getFiliere(filiere).getSigle();
+        }
         rSMTextFull_matricule.setText(matricule);
     }
 

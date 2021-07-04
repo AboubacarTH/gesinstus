@@ -145,7 +145,6 @@
                 </EtchetBorder>
               </Border>
               <Font PropertyName="font" name="Tahoma" size="12" style="0"/>
-              <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -407,7 +406,6 @@
                 </EtchetBorder>
               </Border>
               <Font PropertyName="font" name="Tahoma" size="12" style="0"/>
-              <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>

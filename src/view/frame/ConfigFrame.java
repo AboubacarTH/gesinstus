@@ -5,12 +5,12 @@
  */
 package view.frame;
 
-import view.Panel.ConfigPan;
-import view.Panel.EtudiantPan;
-import view.Panel.FiliereOptionPanel;
-import view.Panel.NotePan;
-import view.Panel.ProfesseurPanel;
-import view.Panel.UePan;
+import view.panel.ConfigPan;
+import view.panel.EtudiantPanel;
+import view.panel.FiliereOptionPanel;
+import view.panel.NotePan;
+import view.panel.ProfesseurPanel;
+import view.panel.UePan;
 
 /**
  *
@@ -145,7 +145,7 @@ public class ConfigFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_item_eleveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_eleveActionPerformed
-        this.setContentPane(new EtudiantPan());
+        this.setContentPane(new EtudiantPanel());
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_menu_item_eleveActionPerformed

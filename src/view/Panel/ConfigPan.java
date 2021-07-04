@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.Panel;
+package view.panel;
 
 import controller.AnneeController;
 import controller.NationaliteController;
@@ -333,12 +333,12 @@ public class ConfigPan extends RSPanelImage {
         JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 
-//    private void update_label_annee_scolaire(){
-//        if(parametreController.getParametre()== null){
-//            return;
-//        }
-//        jLabel_annee_en_cours.setText("Année en cours : " + anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
-//    }
+    private void update_label_annee_scolaire(){
+        if(parametreController.getParametre()== null){
+            return;
+        }
+        jLabel_annee_en_cours.setText("Année en cours : " + anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
+    }
 
     private void update_list_nationalite() {
         jList_nationalite.setModel(new javax.swing.AbstractListModel<String>() {
@@ -352,7 +352,7 @@ public class ConfigPan extends RSPanelImage {
     
     private void update(){
         update_list_annee();
-//        update_label_annee_scolaire();
+        update_label_annee_scolaire();
         update_list_nationalite();
     }
 }

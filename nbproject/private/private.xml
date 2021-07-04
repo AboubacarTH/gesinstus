@@ -3,9 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/DataBaseConnection.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/EtudiantController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/ConfigPan.java</file>
-            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/EtudiantPan.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/database/ConnecterDB.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/AnneeDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/OptionDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/ParametreController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/frame/ConfigFrame.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/NiveauController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/EtudiantPan.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/EtudiantDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/NationaliteDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/Panel/FiliereOptionPanel.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/FiliereController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/FiliereDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/SemestreDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/OptionController.java</file>
         </group>
     </open-files>
 </project-private>

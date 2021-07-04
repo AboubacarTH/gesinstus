@@ -165,11 +165,14 @@ public class EtudiantController {
         return null;
     }
     
-    public ArrayList<Etudiant> getEtudiants(int id_filiere){
+    public ArrayList<Etudiant> getEtudiants(int id_annee, int id_filiere){
         ArrayList<Etudiant> listEtudiant = new ArrayList<>();
         try {
             String req = "SELECT * FROM etudiants JOIN options ON "
                     + "etudiants.id_option = options.id WHERE options.id_filiere = ? ";
+            if(id_annee != 0){
+                req += "AND etudiants.id_annee = '" + id_annee + "' ";
+            }
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.execute();
@@ -183,11 +186,14 @@ public class EtudiantController {
         }
         return null;
     }
-    public ArrayList<Etudiant> getEtudiants(int id_filiere, int id_option){
+    public ArrayList<Etudiant> getEtudiants(int id_annee, int id_filiere, int id_option){
         ArrayList<Etudiant> listEtudiant = new ArrayList<>();
         try {
             String req = "SELECT * FROM etudiants JOIN options ON "
                     + "etudiants.id_option = options.id WHERE options.id_filiere = ? AND options.id = ? ";
+            if(id_annee != 0){
+                req += "AND etudiants.id_annee = '" + id_annee + "' ";
+            }
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, id_filiere);
             preparedStatement.setInt(2, id_option);
@@ -251,7 +257,7 @@ public class EtudiantController {
         try {
             String req = "DELETE FROM etudiants WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EtudiantController.class.getName()).log(Level.SEVERE, null, ex);

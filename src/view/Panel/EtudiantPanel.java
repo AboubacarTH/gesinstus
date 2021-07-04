@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.Panel;
+package view.panel;
 
 import bean.Etudiant;
+import bean.Filiere;
 import bean.Nationalite;
+import bean.Niveau;
+import bean.Option;
 import controller.AnneeController;
 import controller.EtudiantController;
 import controller.FiliereController;
@@ -28,23 +31,23 @@ import view.dialog.EtudiantDialog;
  *
  * @author ATH
  */
-public class EtudiantPan extends RSPanelImage {
+public class EtudiantPanel extends RSPanelImage {
 
     /**
      * Creates new form ElevePan
      */
-    public EtudiantPan() {
+    public EtudiantPanel() {
         etudiantController = new EtudiantController();
         nationaliteController = new NationaliteController();
         filiereController = new FiliereController();
         optionController = new OptionController();
         niveauController = new NiveauController();
         anneeController = new AnneeController();
-        ParametreController parametreController = new ParametreController();
+        parametreController = new ParametreController();
         initComponents();
         initCbAnnee();
         try {
-            //rSComboMetro_annee.setSelectedItem(anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
+            rSComboMetro_annee.setSelectedItem(anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
         } catch (Exception e) {
         }
         initCBNiveau();
@@ -80,6 +83,8 @@ public class EtudiantPan extends RSPanelImage {
         jLabel2 = new javax.swing.JLabel();
         rSComboMetro_niveau = new rojerusan.RSComboMetro();
         jLabel6 = new javax.swing.JLabel();
+        rSButtonRiple_ajouter_modifier = new rojeru_san.RSButtonRiple();
+        rSButtonRiple_suprimer = new rojeru_san.RSButtonRiple();
         jPanel1 = new javax.swing.JPanel();
         rSComboMetro_filiere = new rojerusan.RSComboMetro();
         rSComboMetro_option = new rojerusan.RSComboMetro();
@@ -221,6 +226,22 @@ public class EtudiantPan extends RSPanelImage {
 
         jLabel6.setText("Niveau");
 
+        rSButtonRiple_ajouter_modifier.setText("AJOUTER");
+        rSButtonRiple_ajouter_modifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonRiple_ajouter_modifierActionPerformed(evt);
+            }
+        });
+
+        rSButtonRiple_suprimer.setBackground(new java.awt.Color(255, 0, 51));
+        rSButtonRiple_suprimer.setText("Suprimer");
+        rSButtonRiple_suprimer.setEnabled(false);
+        rSButtonRiple_suprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonRiple_suprimerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -229,20 +250,20 @@ public class EtudiantPan extends RSPanelImage {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(rSButtonRiple_ajouter_modifier, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(rSButtonRiple_suprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel1)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(rSComboMetro_nationalite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rSComboMetro_sexe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -253,20 +274,23 @@ public class EtudiantPan extends RSPanelImage {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(rSComboMetro_nationalite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rSComboMetro_sexe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rSButtonRiple_ajouter_modifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rSButtonRiple_suprimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(rSMTextFull_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -358,15 +382,15 @@ public class EtudiantPan extends RSPanelImage {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_item_detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_detailActionPerformed
         // TODO add your handling code here:
-        int row = jTable_etudiant.getSelectedRow();
-        String matricule = jTable_etudiant.getValueAt(row, 8).toString();
+//        int row = jTable_etudiant.getSelectedRow();
+//        String matricule = jTable_etudiant.getValueAt(row, 8).toString();
 //        Detail detail = new Detail(null, true, etudiantController.getEtudiant(matricule));
 //        detail.setVisible(true);
     }//GEN-LAST:event_menu_item_detailActionPerformed
@@ -384,50 +408,19 @@ public class EtudiantPan extends RSPanelImage {
     }//GEN-LAST:event_menu_item_smsActionPerformed
 
     private void menu_item_add_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_etudiantActionPerformed
-        EtudiantDialog etudiant = new EtudiantDialog(null, true);
-        etudiant.setVisible(true);
-        update_table();
+        ajout_etudiant();
     }//GEN-LAST:event_menu_item_add_etudiantActionPerformed
 
     private void menu_item_update_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_etudiantActionPerformed
-        int row = jTable_etudiant.getSelectedRow();
-        int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
-        EtudiantDialog etudiant = new EtudiantDialog(null, true, etudiantController.getEtudiant(id));
-        etudiant.setVisible(true);
-        update_table();
+        modification_etudiant();
     }//GEN-LAST:event_menu_item_update_etudiantActionPerformed
 
     private void menu_item_remove_etudiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_etudiantActionPerformed
-        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'étudiant " + jTable_etudiant.getValueAt(jTable_etudiant.getSelectedRow(), 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
-        if(choice == 0){
-            int row = jTable_etudiant.getSelectedRow();
-            int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
-            etudiantController.removeEtudiant(id);
-        }
-        update_table();
+        supression_etudiant();
     }//GEN-LAST:event_menu_item_remove_etudiantActionPerformed
 
     private void jScrollPane3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane3MouseReleased
-        int r = jTable_etudiant.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_etudiant.getRowCount()){
-            jTable_etudiant.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_etudiant.clearSelection();
-        }
-        int index = jTable_etudiant.getSelectedRow();
-        if(index < 0){
-            //menu_item_sms.setEnabled(false);
-            menu_item_detail.setEnabled(false);
-            menu_item_remove_etudiant.setEnabled(false);
-            menu_item_update_etudiant.setEnabled(false);
-        }else{
-            //menu_item_sms.setEnabled(true);
-            menu_item_detail.setEnabled(true);
-            menu_item_add_etudiant.setEnabled(true);
-            menu_item_remove_etudiant.setEnabled(true);
-            menu_item_update_etudiant.setEnabled(true);
-        }
+        action_popup_menu(evt);
         if(evt.isPopupTrigger() && evt.getComponent() instanceof JScrollPane){
             popup_table.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table.setVisible(true);
@@ -435,26 +428,7 @@ public class EtudiantPan extends RSPanelImage {
     }//GEN-LAST:event_jScrollPane3MouseReleased
 
     private void jTable_etudiantMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_etudiantMouseReleased
-        int r = jTable_etudiant.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_etudiant.getRowCount()){
-            jTable_etudiant.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_etudiant.clearSelection();
-        }
-        int index = jTable_etudiant.getSelectedRow();
-        if(index < 0){
-            //menu_item_sms.setEnabled(false);
-            menu_item_detail.setEnabled(false);
-            menu_item_remove_etudiant.setEnabled(false);
-            menu_item_update_etudiant.setEnabled(false);
-        }else{
-            //menu_item_sms.setEnabled(true);
-            menu_item_detail.setEnabled(true);
-            menu_item_add_etudiant.setEnabled(true);
-            menu_item_remove_etudiant.setEnabled(true);
-            menu_item_update_etudiant.setEnabled(true);
-        }
+        action_popup_menu(evt);
         if(evt.isPopupTrigger() && evt.getComponent() instanceof JTable){
             popup_table.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table.setVisible(true);
@@ -486,12 +460,25 @@ public class EtudiantPan extends RSPanelImage {
         update_table();
     }//GEN-LAST:event_rSComboMetro_anneeActionPerformed
 
+    private void rSButtonRiple_suprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonRiple_suprimerActionPerformed
+        supression_etudiant();
+    }//GEN-LAST:event_rSButtonRiple_suprimerActionPerformed
+
+    private void rSButtonRiple_ajouter_modifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonRiple_ajouter_modifierActionPerformed
+        if("Ajouter".equals(rSButtonRiple_ajouter_modifier.getText())){
+            ajout_etudiant();
+        }else{
+            modification_etudiant();
+        }
+    }//GEN-LAST:event_rSButtonRiple_ajouter_modifierActionPerformed
+
     private final EtudiantController etudiantController;
     private final NationaliteController nationaliteController;
     private final FiliereController filiereController;
     private final OptionController optionController;
     private final NiveauController niveauController;
     private final AnneeController anneeController;
+    private final ParametreController parametreController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -510,6 +497,8 @@ public class EtudiantPan extends RSPanelImage {
     private javax.swing.JMenuItem menu_item_sms;
     private javax.swing.JMenuItem menu_item_update_etudiant;
     private javax.swing.JPopupMenu popup_table;
+    private rojeru_san.RSButtonRiple rSButtonRiple_ajouter_modifier;
+    private rojeru_san.RSButtonRiple rSButtonRiple_suprimer;
     private rojerusan.RSComboMetro rSComboMetro_annee;
     private rojerusan.RSComboMetro rSComboMetro_filiere;
     private rojerusan.RSComboMetro rSComboMetro_nationalite;
@@ -541,13 +530,8 @@ public class EtudiantPan extends RSPanelImage {
         });
         if(rSComboMetro_filiere.getItemCount() > 1){
             rSComboMetro_filiere.addItem("Toutes");
-        }
-        
+        }        
     }
-    private void success_information() {
-        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
     private void update_table(){
         String entete[] = {"N°", "MATRICULE", "NOM ET PRENOM", "SEXE", "DATE DE NAISSANCE", "LIEU DE NAISSANCE", "NATIONALITE", "NUM. PARENT/TUTEUR", "ID"};
         DefaultTableModel dt=new DefaultTableModel(null,entete);
@@ -571,13 +555,22 @@ public class EtudiantPan extends RSPanelImage {
             sexe = rSComboMetro_sexe.getSelectedItem().toString();
         }
         if(rSComboMetro_option.getSelectedIndex() > -1){
-            id_option = optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId();
+            Option option = optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString());
+            if(option != null){
+                id_option = option.getId();
+            }
         }
         if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            id_filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId();
+            Filiere filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString());
+            if(filiere != null){
+                id_filiere = filiere.getId();
+            }   
         }
         if(rSComboMetro_niveau.getSelectedIndex() > -1){
-            id_niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId();
+            Niveau niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString());
+            if(niveau != null){
+                id_niveau = niveau.getId();
+            }
         }
         ArrayList<Etudiant> list_etudiant = etudiantController.getEtudiants(id_annee, id_filiere, id_option, id_nationalite, id_niveau, sexe, rechercher);
         
@@ -654,5 +647,64 @@ public class EtudiantPan extends RSPanelImage {
         niveauController.getNiveaux().forEach((n) -> {
             rSComboMetro_niveau.addItem(n.getNiveau());
         });
+        if(rSComboMetro_niveau.getItemCount() > 1){
+            rSComboMetro_niveau.addItem("Tous");
+        }
+    }
+
+    private void supression_etudiant() {
+        if(jTable_etudiant.getSelectedRow() < 0){
+            return;
+        }
+        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'étudiant " + jTable_etudiant.getValueAt(jTable_etudiant.getSelectedRow(), 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
+        if(choice == 0){
+            int row = jTable_etudiant.getSelectedRow();
+            int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
+            etudiantController.removeEtudiant(id);
+        }
+        update_table();
+    }
+
+    private void modification_etudiant() {
+        int row = jTable_etudiant.getSelectedRow();
+        int id = Integer.parseInt(jTable_etudiant.getValueAt(row, 8).toString());
+        EtudiantDialog etudiant = new EtudiantDialog(null, true, etudiantController.getEtudiant(id));
+        etudiant.setVisible(true);
+        update_table();
+    }
+
+    private void ajout_etudiant() {
+        EtudiantDialog etudiant = new EtudiantDialog(null, true);
+        etudiant.setVisible(true);
+        update_table();
+    }
+
+    private void action_popup_menu(java.awt.event.MouseEvent evt) {
+        int r = jTable_etudiant.rowAtPoint(evt.getPoint());
+        if(r >=0 && r < jTable_etudiant.getRowCount()){
+            jTable_etudiant.setRowSelectionInterval(r, r);
+
+        }else{
+            jTable_etudiant.clearSelection();
+        }
+        int index = jTable_etudiant.getSelectedRow();
+        if(index < 0){
+            //menu_item_sms.setEnabled(false);
+            menu_item_detail.setEnabled(false);
+            menu_item_remove_etudiant.setEnabled(false);
+            menu_item_update_etudiant.setEnabled(false);
+            rSButtonRiple_ajouter_modifier.setText("Ajouter");
+            rSButtonRiple_ajouter_modifier.setBackground(new Color(0, 112, 192));
+            rSButtonRiple_suprimer.setEnabled(false);
+        }else{
+            //menu_item_sms.setEnabled(true);
+            menu_item_detail.setEnabled(true);
+            menu_item_add_etudiant.setEnabled(true);
+            menu_item_remove_etudiant.setEnabled(true);
+            menu_item_update_etudiant.setEnabled(true);
+            rSButtonRiple_ajouter_modifier.setText("Modifer");
+            rSButtonRiple_ajouter_modifier.setBackground(Color.green);
+            rSButtonRiple_suprimer.setEnabled(true);
+        }
     }
 }

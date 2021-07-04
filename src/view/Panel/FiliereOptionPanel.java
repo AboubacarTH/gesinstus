@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.Panel;
+package view.panel;
 
+import controller.AnneeController;
 import controller.EtudiantController;
 import controller.FiliereController;
 import controller.OptionController;
+import controller.ParametreController;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -32,7 +34,14 @@ public class FiliereOptionPanel extends RSPanelImage {
         filiereController = new FiliereController();
         optionController = new OptionController();
         etudiantController = new EtudiantController();
+        anneeController = new AnneeController();
+        parametreController = new ParametreController();
         initComponents();
+        initCbAnnee();
+        try {
+            rSComboMetro_annee.setSelectedItem(anneeController.getAnnee(parametreController.getParametre().getId_annee()).getAnnee());
+        } catch (Exception e) {
+        }
         update_table_filiere();
         update_table_option();
     }
@@ -58,6 +67,8 @@ public class FiliereOptionPanel extends RSPanelImage {
         jTable_filiere = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_option = new javax.swing.JTable();
+        rSComboMetro_annee = new rojerusan.RSComboMetro();
+        jLabel1 = new javax.swing.JLabel();
 
         menu_item_add_filiere.setText("Ajouter une nouvelle filière");
         menu_item_add_filiere.addActionListener(new java.awt.event.ActionListener() {
@@ -193,6 +204,14 @@ public class FiliereOptionPanel extends RSPanelImage {
             jTable_option.getColumnModel().getColumn(3).setMaxWidth(10);
         }
 
+        rSComboMetro_annee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSComboMetro_anneeActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Année scolaire");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,14 +220,23 @@ public class FiliereOptionPanel extends RSPanelImage {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1088, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rSComboMetro_annee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                 .addContainerGap())
@@ -222,8 +250,10 @@ public class FiliereOptionPanel extends RSPanelImage {
     }//GEN-LAST:event_menu_item_add_filiereActionPerformed
 
     private void menu_item_update_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_filiereActionPerformed
-        FiliereDialog filiere = new FiliereDialog(null, true, filiereController.getFiliere(Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString())));
-        filiere.setVisible(true);
+        if(jTable_filiere.getSelectedRow() > -1){
+            FiliereDialog filiere = new FiliereDialog(null, true, filiereController.getFiliere(Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString())));
+            filiere.setVisible(true);
+        }
         update_table_filiere();
     }//GEN-LAST:event_menu_item_update_filiereActionPerformed
 
@@ -321,11 +351,8 @@ public class FiliereOptionPanel extends RSPanelImage {
     }//GEN-LAST:event_menu_item_add_optionActionPerformed
 
     private void menu_item_update_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_optionActionPerformed
-        if(jTable_filiere.getSelectedRow() >= 0 && jTable_option.getSelectedRow() >= 0){
+        if(jTable_option.getSelectedRow() > -1){
             OptionDialog option = new OptionDialog(null, true, optionController.getOption(Integer.parseInt(jTable_option.getValueAt(jTable_option.getSelectedRow(), 3).toString())));
-            option.setVisible(true);
-        }else{
-            OptionDialog option = new OptionDialog(null, true);
             option.setVisible(true);
         }
         update_table_option();
@@ -348,10 +375,18 @@ public class FiliereOptionPanel extends RSPanelImage {
         
     }//GEN-LAST:event_jTable_filiereMouseClicked
 
+    private void rSComboMetro_anneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_anneeActionPerformed
+        update_table_filiere();
+        update_table_option();
+    }//GEN-LAST:event_rSComboMetro_anneeActionPerformed
+
     private final FiliereController filiereController;
     private final OptionController optionController;
     private final EtudiantController etudiantController;
+    private final AnneeController anneeController;
+    private final ParametreController parametreController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable_filiere;
@@ -364,6 +399,7 @@ public class FiliereOptionPanel extends RSPanelImage {
     private javax.swing.JMenuItem menu_item_update_option;
     private javax.swing.JPopupMenu popup_table_filiere;
     private javax.swing.JPopupMenu popup_table_option;
+    private rojerusan.RSComboMetro rSComboMetro_annee;
     // End of variables declaration//GEN-END:variables
 
 //    private void success_information() {
@@ -374,13 +410,17 @@ public class FiliereOptionPanel extends RSPanelImage {
         String entete[] = {"N°", "FILIERE", "EFFECTIF", "ID"};
         DefaultTableModel dt = new DefaultTableModel(null,entete);
         dt.setRowCount(0);
+        int id_annee = 0;
+        if(rSComboMetro_annee.getSelectedIndex() > -1 && !"Toutes".equals(rSComboMetro_annee.getSelectedItem().toString())){
+            id_annee = anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId();
+        }
         ArrayList<bean.Filiere> list_filiere = filiereController.getFilieres();
 
         for(int i = 0; i< list_filiere.size(); i++){
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
             colonne[1] = list_filiere.get(i).getFiliere();
-            colonne[2] = etudiantController.getEtudiants(list_filiere.get(i).getId()).size();
+            colonne[2] = etudiantController.getEtudiants(id_annee, list_filiere.get(i).getId()).size();
             colonne[3] = list_filiere.get(i).getId();
             dt.addRow(colonne);
         }
@@ -412,13 +452,17 @@ public class FiliereOptionPanel extends RSPanelImage {
         if(jTable_filiere.getSelectedRow() > -1){
             id_filiere = Integer.parseInt(jTable_filiere.getValueAt(jTable_filiere.getSelectedRow(), 3).toString());
         }
+        int id_annee = 0;
+        if(rSComboMetro_annee.getSelectedIndex() > -1 && !"Toutes".equals(rSComboMetro_annee.getSelectedItem().toString())){
+            id_annee = anneeController.getAnnee(rSComboMetro_annee.getSelectedItem().toString()).getId();
+        }
         ArrayList<bean.Option> list_option = optionController.getOptions(id_filiere);
         
         for(int i = 0; i< list_option.size(); i++){
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
-            colonne[1] = filiereController.getFiliere(list_option.get(i).getId()).getFiliere() + " / " + list_option.get(i).getOption();
-            colonne[2] = etudiantController.getEtudiants(id_filiere, list_option.get(i).getId()).size();
+            colonne[1] = filiereController.getFiliere(list_option.get(i).getId_filiere()).getFiliere() + " / " + list_option.get(i).getOption();
+            colonne[2] = etudiantController.getEtudiants(id_annee, id_filiere, list_option.get(i).getId()).size();
             colonne[3] = list_option.get(i).getId();
             dt.addRow(colonne);
         }
@@ -440,5 +484,13 @@ public class FiliereOptionPanel extends RSPanelImage {
             jTable_option.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
         }
     }
-    
+    private void initCbAnnee() {
+        rSComboMetro_annee.removeAllItems();
+        anneeController.getAnnees().forEach((a) -> {
+            rSComboMetro_annee.addItem(a.getAnnee());
+        });
+        if(rSComboMetro_annee.getItemCount() > 1){
+            rSComboMetro_annee.addItem("Toutes");
+        }
+    }
 }

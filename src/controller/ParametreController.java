@@ -44,7 +44,7 @@ public class ParametreController {
     }
     public Parametre getParametre(){
         try {
-            String req = "SELECT * parametres WHERE id = ? ";
+            String req = "SELECT * FROM parametres WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, 1);
             preparedStatement.execute();
@@ -59,7 +59,7 @@ public class ParametreController {
     }
     public void addParametre(int id_annee){
         try {
-            String req = "INSERT INTO parametres (id, annee) VALUES (?, ?)";
+            String req = "INSERT INTO parametres (id, id_annee) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setInt(1, 1);
             preparedStatement.setInt(2, id_annee);

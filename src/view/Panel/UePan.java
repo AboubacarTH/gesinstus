@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.Panel;
+package view.panel;
 
 import controller.EcController;
 import controller.FiliereController;
@@ -140,7 +140,7 @@ public class UePan extends RSPanelImage {
         setImagen(new javax.swing.ImageIcon(getClass().getResource("/icon/getty_655998316_2000149920009280219_363765.jpg"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1100, 579));
 
-        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des unités d'enseignemants", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des unités d'enseignemants", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jScrollPane3MouseReleased(evt);
@@ -308,7 +308,7 @@ public class UePan extends RSPanelImage {
                 .addGap(12, 12, 12))
         );
 
-        jScrollPane4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des elements constitutifs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        jScrollPane4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des elements constitutifs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jScrollPane4.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
