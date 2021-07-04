@@ -5,19 +5,26 @@
  */
 package view.panel;
 
-import controller.ElementConstitutifController;
+import bean.Filiere;
+import bean.Niveau;
+import bean.Option;
+import bean.Semestre;
+import bean.UniteEnseignementOption;
 import controller.FiliereController;
 import controller.NiveauController;
 import controller.OptionController;
 import controller.SemestreController;
+import controller.UniteEnseignementController;
 import controller.UniteEnseignementOptionController;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import rojerusan.RSPanelImage;
+import view.dialog.UniteEnseignementOptionDialog;
 
 /**
  *
@@ -34,14 +41,13 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         uniteEnseignementOptionController = new UniteEnseignementOptionController();
         optionController = new OptionController();
         niveauController = new NiveauController();
-        elementConstitutifController = new ElementConstitutifController();
+        uniteEnseignementController = new UniteEnseignementController();
         initComponents();
         initCbNiveau();
         initCbSemestre();
         initCbFiliere();
         initCbOption();
-        update_table();
-        update_table_ec();
+        update_table_ueo();
     }
 
     /**
@@ -54,15 +60,10 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
     private void initComponents() {
 
         popup_table_ue = new javax.swing.JPopupMenu();
-        menu_item_detail = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menu_item_add_ue = new javax.swing.JMenuItem();
         menu_item_update_ue = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menu_item_remove_ue = new javax.swing.JMenuItem();
-        popup_table_ec = new javax.swing.JPopupMenu();
-        menu_item_add_ec = new javax.swing.JMenuItem();
-        menu_item_update_ec = new javax.swing.JMenuItem();
-        menu_item_remove_ec = new javax.swing.JMenuItem();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable_ue = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -76,19 +77,8 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         rSComboMetro_options = new rojerusan.RSComboMetro();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable_ec = new javax.swing.JTable();
 
-        menu_item_detail.setText("Voir les EC");
-        menu_item_detail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_detailActionPerformed(evt);
-            }
-        });
-        popup_table_ue.add(menu_item_detail);
-        popup_table_ue.add(jSeparator1);
-
-        menu_item_add_ue.setText("Ajouter nouvelle unité d'enseignemant");
+        menu_item_add_ue.setText("Attribuer une nouvelle unité d'enseignement pour une option");
         menu_item_add_ue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_item_add_ueActionPerformed(evt);
@@ -96,15 +86,16 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         });
         popup_table_ue.add(menu_item_add_ue);
 
-        menu_item_update_ue.setText("Modifier l'unité d'enseignemant");
+        menu_item_update_ue.setText("Modifier l'unité d'enseignement de cette option");
         menu_item_update_ue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_item_update_ueActionPerformed(evt);
             }
         });
         popup_table_ue.add(menu_item_update_ue);
+        popup_table_ue.add(jSeparator1);
 
-        menu_item_remove_ue.setText("Retirer l'unité d'enseignemant");
+        menu_item_remove_ue.setText("Retirer l'unité d'enseignemant de cette option");
         menu_item_remove_ue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_item_remove_ueActionPerformed(evt);
@@ -112,34 +103,10 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         });
         popup_table_ue.add(menu_item_remove_ue);
 
-        menu_item_add_ec.setText("Ajouter nouveau element constitutif");
-        menu_item_add_ec.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_add_ecActionPerformed(evt);
-            }
-        });
-        popup_table_ec.add(menu_item_add_ec);
-
-        menu_item_update_ec.setText("Modifier  l'element constitutif");
-        menu_item_update_ec.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_update_ecActionPerformed(evt);
-            }
-        });
-        popup_table_ec.add(menu_item_update_ec);
-
-        menu_item_remove_ec.setText("Retirer l'element constitutif");
-        menu_item_remove_ec.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_remove_ecActionPerformed(evt);
-            }
-        });
-        popup_table_ec.add(menu_item_remove_ec);
-
         setImagen(new javax.swing.ImageIcon(getClass().getResource("/icon/getty_655998316_2000149920009280219_363765.jpg"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1100, 579));
 
-        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des unités d'enseignemants", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des unités d'enseignemants par option", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jScrollPane3MouseReleased(evt);
@@ -307,57 +274,6 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
                 .addGap(12, 12, 12))
         );
 
-        jScrollPane4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 51, 102), new java.awt.Color(0, 102, 102)), "Liste des elements constitutifs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-        jScrollPane4.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jScrollPane4MouseReleased(evt);
-            }
-        });
-
-        jTable_ec.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "N°", "SIGLE", "ELEMENT CONSTITUTIF", "CM", "TD_TP", "VHE", "CREDIT"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable_ec.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jTable_ecMouseReleased(evt);
-            }
-        });
-        jScrollPane4.setViewportView(jTable_ec);
-        if (jTable_ec.getColumnModel().getColumnCount() > 0) {
-            jTable_ec.getColumnModel().getColumn(0).setMinWidth(50);
-            jTable_ec.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTable_ec.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable_ec.getColumnModel().getColumn(1).setMinWidth(105);
-            jTable_ec.getColumnModel().getColumn(1).setPreferredWidth(105);
-            jTable_ec.getColumnModel().getColumn(1).setMaxWidth(105);
-            jTable_ec.getColumnModel().getColumn(3).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(3).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(3).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setMaxWidth(75);
-        }
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -369,8 +285,7 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -381,54 +296,38 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_item_add_ueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_ueActionPerformed
-        dialog.UeDialog ue = new dialog.UeDialog(null, true);
-        ue.setVisible(true);
-        update_table();
+        UniteEnseignementOptionDialog ueod = new UniteEnseignementOptionDialog(null, true);
+        ueod.setVisible(true);
+        update_table_ueo();
     }//GEN-LAST:event_menu_item_add_ueActionPerformed
 
     private void menu_item_update_ueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_ueActionPerformed
         int row = jTable_ue.getSelectedRow();
-        String id_ue = jTable_ue.getValueAt(row, 5).toString();
-        dialog.UeDialog ue = new dialog.UeDialog(null, true, ueController.getUe(id_ue));
-        ue.setVisible(true);
-        update_table();
+        int id = Integer.parseInt(jTable_ue.getValueAt(row, 5).toString());
+        UniteEnseignementOptionDialog ueod = new UniteEnseignementOptionDialog(null, true, uniteEnseignementOptionController.getUniteEnseignementOption(id));
+        ueod.setVisible(true);
+        update_table_ueo();
     }//GEN-LAST:event_menu_item_update_ueActionPerformed
 
     private void menu_item_remove_ueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_ueActionPerformed
-        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'unité d'enseignemant " + jTable_ue.getValueAt(jTable_ue.getSelectedRow(), 4) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
+        int row = jTable_ue.getSelectedRow();
+        int id = Integer.parseInt(jTable_ue.getValueAt(row, 5).toString());
+        String option = optionController.getOption(uniteEnseignementOptionController.getUniteEnseignementOption(id).getId_option()).getOption();
+        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'unité d'enseignemant " + jTable_ue.getValueAt(row, 4) + " de l'option " + option + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
         if (choice == 0) {
-            ueController.removeUe(jTable_ue.getValueAt(jTable_ue.getSelectedRow(), 5).toString());
+            uniteEnseignementOptionController.removeUniteEnseignementOption(id);
         }
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_menu_item_remove_ueActionPerformed
 
     private void jScrollPane3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane3MouseReleased
-        int r = jTable_ue.rowAtPoint(evt.getPoint());
-        if (r >= 0 && r < jTable_ue.getRowCount()) {
-            jTable_ue.setRowSelectionInterval(r, r);
-
-        } else {
-            jTable_ue.clearSelection();
-        }
-        int index = jTable_ue.getSelectedRow();
-        if (index < 0) {
-            menu_item_detail.setEnabled(false);
-            menu_item_remove_ue.setEnabled(false);
-            menu_item_update_ue.setEnabled(false);
-        } else {
-            menu_item_detail.setEnabled(true);
-            menu_item_add_ue.setEnabled(true);
-            menu_item_remove_ue.setEnabled(true);
-            menu_item_update_ue.setEnabled(true);
-        }
+        action_popup_menu_ueo(evt);
         if (evt.isPopupTrigger() && evt.getComponent() instanceof JScrollPane) {
             popup_table_ue.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table_ue.setVisible(true);
@@ -436,24 +335,7 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
     }//GEN-LAST:event_jScrollPane3MouseReleased
 
     private void jTable_ueMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ueMouseReleased
-        int r = jTable_ue.rowAtPoint(evt.getPoint());
-        if (r >= 0 && r < jTable_ue.getRowCount()) {
-            jTable_ue.setRowSelectionInterval(r, r);
-
-        } else {
-            jTable_ue.clearSelection();
-        }
-        int index = jTable_ue.getSelectedRow();
-        if (index < 0) {
-            menu_item_detail.setEnabled(false);
-            menu_item_remove_ue.setEnabled(false);
-            menu_item_update_ue.setEnabled(false);
-        } else {
-            menu_item_detail.setEnabled(true);
-            menu_item_add_ue.setEnabled(true);
-            menu_item_remove_ue.setEnabled(true);
-            menu_item_update_ue.setEnabled(true);
-        }
+        action_popup_menu_ueo(evt);
         if (evt.isPopupTrigger() && evt.getComponent() instanceof JTable) {
             popup_table_ue.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table_ue.setVisible(true);
@@ -466,120 +348,36 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
 
     private void rSComboMetro_niveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_niveauActionPerformed
         initCbSemestre();
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_rSComboMetro_niveauActionPerformed
 
     private void rSComboMetro_semestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_semestreActionPerformed
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_rSComboMetro_semestreActionPerformed
-
-    private void menu_item_detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_detailActionPerformed
-        int row = jTable_ue.getSelectedRow();
-        String id_ue = jTable_ue.getValueAt(row, 5).toString();
-        dialog.EcDialog ec = new EcDialog(null, true, ueController.getUe(id_ue));
-        ec.setVisible(true);
-        update_table();
-    }//GEN-LAST:event_menu_item_detailActionPerformed
 
     private void rSComboMetro_filiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_filiereActionPerformed
         initCbOption();
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_rSComboMetro_filiereActionPerformed
 
     private void rSComboMetro_optionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_optionsActionPerformed
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_rSComboMetro_optionsActionPerformed
 
-    private void jTable_ecMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ecMouseReleased
-        int r = jTable_ec.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_ec.getRowCount()){
-            jTable_ec.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_ec.clearSelection();
-        }
-        int index = jTable_ec.getSelectedRow();
-        if(index < 0){
-            menu_item_remove_ec.setEnabled(false);
-            menu_item_update_ec.setEnabled(false);
-        }else{
-            menu_item_add_ec.setEnabled(true);
-            menu_item_remove_ec.setEnabled(true);
-            menu_item_update_ec.setEnabled(true);
-        }
-        if(evt.isPopupTrigger() && evt.getComponent() instanceof JTable){
-            popup_table_ec.show(evt.getComponent(), evt.getX(), evt.getY());
-            popup_table_ec.setVisible(true);
-        }
-    }//GEN-LAST:event_jTable_ecMouseReleased
-
-    private void jScrollPane4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane4MouseReleased
-        int r = jTable_ec.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_ec.getRowCount()){
-            jTable_ec.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_ec.clearSelection();
-        }
-        int index = jTable_ec.getSelectedRow();
-        if(index < 0){
-            menu_item_remove_ec.setEnabled(false);
-            menu_item_update_ec.setEnabled(false);
-        }else{
-            menu_item_add_ec.setEnabled(true);
-            menu_item_remove_ec.setEnabled(true);
-            menu_item_update_ec.setEnabled(true);
-        }
-        if(evt.isPopupTrigger() && evt.getComponent() instanceof JScrollPane){
-            popup_table_ec.show(evt.getComponent(), evt.getX(), evt.getY());
-            popup_table_ec.setVisible(true);
-        }
-    }//GEN-LAST:event_jScrollPane4MouseReleased
-
-    private void menu_item_add_ecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_ecActionPerformed
-        int row = jTable_ue.getSelectedRow();
-        if(row > -1){
-            String id_ue = jTable_ue.getValueAt(row, 5).toString();
-            dialog.EcDialog ecm = new dialog.EcDialog(null, true, ueController.getUe(id_ue));
-            ecm.setVisible(true);
-        }else{
-            dialog.EcDialog ecm = new dialog.EcDialog(null, true);
-            ecm.setVisible(true);
-        }
-        
-        update_table();
-    }//GEN-LAST:event_menu_item_add_ecActionPerformed
-
-    private void menu_item_update_ecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_update_ecActionPerformed
-        int row = jTable_ec.getSelectedRow();
-        String id_ec = jTable_ec.getValueAt(row, 1).toString();
-        dialog.EcDialog ecm = new EcDialog(null, true, ecController.getEc(id_ec));
-        ecm.setVisible(true);
-        update_table();
-    }//GEN-LAST:event_menu_item_update_ecActionPerformed
-
-    private void menu_item_remove_ecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_ecActionPerformed
-        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'element constitutif " + jTable_ue.getValueAt(jTable_ue.getSelectedRow(), 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
-        if(choice == 0){
-            ecController.removeEc(jTable_ue.getValueAt(jTable_ue.getSelectedRow(), 7).toString());
-        }
-        update_table();
-    }//GEN-LAST:event_menu_item_remove_ecActionPerformed
-
     private void jTable_ueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ueMouseClicked
-        update_table_ec();
+        //update_table_ueo();
     }//GEN-LAST:event_jTable_ueMouseClicked
 
     private void rSMTextFull_rechercherKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rSMTextFull_rechercherKeyReleased
-        update_table();
+        update_table_ueo();
     }//GEN-LAST:event_rSMTextFull_rechercherKeyReleased
 
     private final FiliereController filiereController;
     private final SemestreController semestreController;
     private final UniteEnseignementOptionController uniteEnseignementOptionController;
+    private final UniteEnseignementController uniteEnseignementController;
     private final OptionController optionController;
     private final NiveauController niveauController;
-    private final ElementConstitutifController elementConstitutifController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -588,18 +386,11 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTable jTable_ec;
     private javax.swing.JTable jTable_ue;
-    private javax.swing.JMenuItem menu_item_add_ec;
     private javax.swing.JMenuItem menu_item_add_ue;
-    private javax.swing.JMenuItem menu_item_detail;
-    private javax.swing.JMenuItem menu_item_remove_ec;
     private javax.swing.JMenuItem menu_item_remove_ue;
-    private javax.swing.JMenuItem menu_item_update_ec;
     private javax.swing.JMenuItem menu_item_update_ue;
-    private javax.swing.JPopupMenu popup_table_ec;
     private javax.swing.JPopupMenu popup_table_ue;
     private rojerusan.RSComboMetro rSComboMetro_filiere;
     private rojerusan.RSComboMetro rSComboMetro_niveau;
@@ -610,7 +401,7 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
 
     private void initCbFiliere() {
         rSComboMetro_filiere.removeAllItems();
-        filiereController.getListFiliere().forEach((f) -> {
+        filiereController.getFilieres().forEach((f) -> {
             rSComboMetro_filiere.addItem(f.getFiliere());
         });
         if (rSComboMetro_filiere.getItemCount() > 1) {
@@ -620,12 +411,13 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
     }
     private void initCbOption() {
         rSComboMetro_options.removeAllItems();
-        String filiere = null;
-        if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            filiere = rSComboMetro_filiere.getSelectedItem().toString();
+        int id_filiere = 0;
+        Filiere filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString());
+        if(filiere != null){
+            id_filiere = filiere.getId();
         }
-        optionsController.getListOptions(filiere).forEach((o) -> {
-            rSComboMetro_options.addItem(o.getOptions());
+        optionController.getOptions(id_filiere).forEach((o) -> {
+            rSComboMetro_options.addItem(o.getOption());
         });
         if(rSComboMetro_options.getItemCount() > 1){
             rSComboMetro_options.addItem("Toutes");
@@ -634,7 +426,7 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
 
     private void initCbNiveau() {
         rSComboMetro_niveau.removeAllItems();
-        niveauController.getListNiveau().forEach((n) -> {
+        niveauController.getNiveaux().forEach((n) -> {
             rSComboMetro_niveau.addItem(n.getNiveau());
         });
         if (rSComboMetro_niveau.getItemCount() > 1) {
@@ -644,11 +436,12 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
 
     private void initCbSemestre() {
         rSComboMetro_semestre.removeAllItems();
-        String niveau = null;
-        if (rSComboMetro_niveau.getSelectedIndex() > -1) {
-            niveau = rSComboMetro_niveau.getSelectedItem().toString();
+        int id_niveau = 0;
+        Niveau niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString());
+        if(niveau != null){
+            id_niveau = niveau.getId();
         }
-        semestreController.getListSemestre(niveau).forEach((s) -> {
+        semestreController.getSemestres(id_niveau).forEach((s) -> {
             rSComboMetro_semestre.addItem(s.getSemestre());
         });
         if (rSComboMetro_semestre.getItemCount() > 1) {
@@ -659,37 +452,47 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
 //    private void success_information() {
 //        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
 //    }
-    private void update_table() {
-        String entete[] = {"N°", "FILIERE", "SEMESTRE", "SIGLE", "UNITE D'ENSEIGNEMANT", "ID"};
+    private void update_table_ueo() {
+        String entete[] = {"N°", "FILIERE/OPTION", "SEMESTRE", "SIGLE", "UNITE D'ENSEIGNEMANT", "ID"};
         DefaultTableModel dt = new DefaultTableModel(null, entete);
         dt.setRowCount(0);
         
-        String rechercher = null, option = null, filiere = null, semestre = null, niveau = null;
+        String rechercher = null;
+        int id_option = 0, id_filiere = 0, id_semestre = 0;
         if(rSMTextFull_rechercher.getText().length() > 0){
             rechercher = rSMTextFull_rechercher.getText();
         }
-        if(rSComboMetro_options.getSelectedIndex() > -1){
-            option = rSComboMetro_options.getSelectedItem().toString();
-        }
         if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            filiere = rSComboMetro_filiere.getSelectedItem().toString();
+            Filiere filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString());
+            if(filiere != null){
+                id_filiere = filiere.getId();
+            }
+        }
+        if(rSComboMetro_options.getSelectedIndex() > -1){
+            Option option = optionController.getOption(id_filiere, rSComboMetro_options.getSelectedItem().toString());
+            if(option != null){
+                id_option = option.getId();
+            }
         }
         if(rSComboMetro_semestre.getSelectedIndex() > -1){
-            semestre = rSComboMetro_semestre.getSelectedItem().toString();
+            Semestre semestre = semestreController.getSemestre(rSComboMetro_semestre.getSelectedItem().toString());
+            if(semestre != null){
+                id_semestre = semestre.getId();
+            }
         }
-        if(rSComboMetro_niveau.getSelectedIndex() > -1){
-            niveau = rSComboMetro_niveau.getSelectedItem().toString();
-        }
-        ArrayList<bean.Ue> list_ue = ueController.getListUe(rechercher, option, filiere, semestre, niveau);
         
-        for (int i = 0; i < list_ue.size(); i++) {
+        ArrayList<UniteEnseignementOption> list_ueo = uniteEnseignementOptionController.getUniteEnseignementOptions(id_option, id_semestre, rechercher);
+        
+        for (int i = 0; i < list_ueo.size(); i++) {
             Object colonne[] = new Object[6];
             colonne[0] = i + 1;
-            colonne[1] = list_ue.get(i).getFiliere() + " / " + list_ue.get(i).getOption();
-            colonne[2] = list_ue.get(i).getSemestre();
-            colonne[3] = list_ue.get(i).getId_ue();
-            colonne[4] = list_ue.get(i).getNom();
-            colonne[5] = list_ue.get(i).getId_ue();
+            Option option = optionController.getOption(list_ueo.get(i).getId_option());
+            Filiere filiere = filiereController.getFiliere(option.getId_filiere());
+            colonne[1] = filiere.getFiliere() + " / " + option.getOption();
+            colonne[2] = semestreController.getSemestre(list_ueo.get(i).getId_semestre()).getSemestre();
+            colonne[3] = uniteEnseignementController.getUniteEnseignement(list_ueo.get(i).getId_unite_enseignement()).getSigle();
+            colonne[4] = uniteEnseignementController.getUniteEnseignement(list_ueo.get(i).getId_unite_enseignement()).getNom();
+            colonne[5] = list_ueo.get(i).getId();
             dt.addRow(colonne);
         }
         this.jTable_ue.setModel(dt);
@@ -697,92 +500,41 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
             jTable_ue.getColumnModel().getColumn(0).setMinWidth(50);
             jTable_ue.getColumnModel().getColumn(0).setPreferredWidth(50);
             jTable_ue.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable_ue.getColumnModel().getColumn(1).setMinWidth(300);
-            jTable_ue.getColumnModel().getColumn(1).setPreferredWidth(300);
-            jTable_ue.getColumnModel().getColumn(1).setMaxWidth(300);
+            jTable_ue.getColumnModel().getColumn(1).setMinWidth(400);
+            jTable_ue.getColumnModel().getColumn(1).setPreferredWidth(400);
+            jTable_ue.getColumnModel().getColumn(1).setMaxWidth(400);
             jTable_ue.getColumnModel().getColumn(2).setMinWidth(100);
             jTable_ue.getColumnModel().getColumn(2).setPreferredWidth(100);
             jTable_ue.getColumnModel().getColumn(2).setMaxWidth(100);
             jTable_ue.getColumnModel().getColumn(3).setMinWidth(75);
             jTable_ue.getColumnModel().getColumn(3).setPreferredWidth(75);
             jTable_ue.getColumnModel().getColumn(3).setMaxWidth(75);
-            jTable_ue.getColumnModel().getColumn(5).setMinWidth(10);
-            jTable_ue.getColumnModel().getColumn(5).setPreferredWidth(10);
-            jTable_ue.getColumnModel().getColumn(5).setMaxWidth(10);
+            jTable_ue.getColumnModel().getColumn(5).setMinWidth(5);
+            jTable_ue.getColumnModel().getColumn(5).setPreferredWidth(5);
+            jTable_ue.getColumnModel().getColumn(5).setMaxWidth(5);
             jTable_ue.setRowHeight(30);
         }
+        jTable_ue.getTableHeader().setBackground(new Color(0,112,192));
+        jTable_ue.getTableHeader().setForeground(Color.white);
+        jTable_ue.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
     }
     
-    private void update_table_ec() {
-        String entete[] = {"N°", "SIGLE", "ELEMENT CONSTITUTIF", "CM", "TD_TP", "VHE", "CREDIT"};
-        DefaultTableModel dt = new DefaultTableModel(null, entete);
-        dt.setRowCount(0);
-        if (jTable_ue.getSelectedRow() < 0) {
-            return;
+    private void action_popup_menu_ueo(java.awt.event.MouseEvent evt) {
+        int r = jTable_ue.rowAtPoint(evt.getPoint());
+        if (r >= 0 && r < jTable_ue.getRowCount()) {
+            jTable_ue.setRowSelectionInterval(r, r);
+
+        } else {
+            jTable_ue.clearSelection();
         }
-        String rechercher = null;
-        if(rSMTextFull_rechercher.getText().length() > 0){
-            rechercher = rSMTextFull_rechercher.getText();
+        int index = jTable_ue.getSelectedRow();
+        if (index < 0) {
+            menu_item_remove_ue.setEnabled(false);
+            menu_item_update_ue.setEnabled(false);
+        } else {
+            menu_item_add_ue.setEnabled(true);
+            menu_item_remove_ue.setEnabled(true);
+            menu_item_update_ue.setEnabled(true);
         }
-        ArrayList<bean.Ec> list_ec = ecController.getListEc(rechercher, jTable_ue.getValueAt(jTable_ue.getSelectedRow(), 3).toString());
-        
-        for(int i = 0; i< list_ec.size(); i++){
-            Object colonne[]=new Object[7];
-            colonne[0] = i + 1;
-            colonne[1] = list_ec.get(i).getId_ec();
-            colonne[2] = list_ec.get(i).getNom();
-            colonne[3] = ecController.getNote(list_ec.get(i).getId_ec(), "CM");
-            colonne[4] = ecController.getNote(list_ec.get(i).getId_ec(), "TD_TP");
-            colonne[5] = ecController.getNote(list_ec.get(i).getId_ec(), "VHE");
-            colonne[6] = ecController.getNote(list_ec.get(i).getId_ec(), "CREDIT");
-            dt.addRow(colonne);
-        }
-        this.jTable_ec.setModel(dt);
-        if (jTable_ec.getColumnModel().getColumnCount() > 0) {
-            jTable_ec.getColumnModel().getColumn(0).setMinWidth(50);
-            jTable_ec.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTable_ec.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable_ec.getColumnModel().getColumn(1).setMinWidth(105);
-            jTable_ec.getColumnModel().getColumn(1).setPreferredWidth(105);
-            jTable_ec.getColumnModel().getColumn(1).setMaxWidth(105);
-            jTable_ec.getColumnModel().getColumn(3).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(3).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(3).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(4).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(5).setMaxWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setMinWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setPreferredWidth(75);
-            jTable_ec.getColumnModel().getColumn(6).setMaxWidth(75);
-            jTable_ec.setRowHeight(30);
-            this.jTable_ec.getModel().addTableModelListener((TableModelEvent e) -> {
-                mise_a_jour_note();
-            });
-        }
-    }
-    private void mise_a_jour_note() {
-        int row = jTable_ec.getSelectedRow();
-        int col = jTable_ec.getSelectedColumn();        
-        if(col < 3){
-            update_table_ec();
-            return;
-        }
-        double valeur;
-        try {
-            valeur = Double.parseDouble(jTable_ec.getValueAt(row, col).toString());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Valeur incorrect !\nSaisissez uniquement des chiffres !\nMettre un point a la place de virgule.", "Valeur incorrecte ", JOptionPane.INFORMATION_MESSAGE);
-            update_table_ec();
-            return;
-        }
-//        if(valeur < 0.00 || valeur > 20.00){
-//            JOptionPane.showMessageDialog(this, "Valeur incorrect !\nLa note à saisir doit être incluse entre 0 et 20!", "Valeur incorrecte ", JOptionPane.INFORMATION_MESSAGE);
-//            update_table_ec();
-//            return;
-//        }
-        ecController.setNote(jTable_ec.getValueAt(row, 1).toString(), jTable_ec.getModel().getColumnName(col), valeur);
     }
 }

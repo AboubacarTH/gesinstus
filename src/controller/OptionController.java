@@ -135,9 +135,11 @@ public class OptionController {
     public ArrayList<Option> getOptions(int id_filiere){
         ArrayList<Option> listOptions = new ArrayList<>();
         try {
-            String req = "SELECT * FROM options WHERE id_filiere = ? ";
+            String req = "SELECT * FROM options WHERE id > 0 ";
+            if(id_filiere != 0){
+                req += "AND id_filiere = '" + id_filiere + "' ";
+            }
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_filiere);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){

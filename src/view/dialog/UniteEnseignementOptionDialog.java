@@ -11,6 +11,7 @@ import controller.NiveauController;
 import controller.OptionController;
 import controller.SemestreController;
 import controller.UniteEnseignementController;
+import controller.UniteEnseignementOptionController;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +32,7 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
         optionController = new OptionController();
         uniteEnseignementController = new UniteEnseignementController();
         niveauController = new NiveauController();
+        uniteEnseignementOptionController = new UniteEnseignementOptionController();
         initComponents();
         initCbfiliere();
         initCbOption();
@@ -46,6 +48,7 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
         optionController = new OptionController();
         uniteEnseignementController = new UniteEnseignementController();
         niveauController = new NiveauController();
+        uniteEnseignementOptionController = new UniteEnseignementOptionController();
         this.uniteEnseignementOption = uniteEnseignementOption;
         initComponents();
         initCbfiliere();
@@ -191,15 +194,25 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_rSComboMetro_niveauActionPerformed
 
     private void rSButton_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButton_validerActionPerformed
-        if(rSComboMetro_filiere.getSelectedIndex() < 0 || rSComboMetro_option.getSelectedIndex() < 0 || rSComboMetro_niveau.getSelectedIndex() < 0 || rSComboMetro_semestre.getSelectedIndex() < 0 || rSMTextFull_sigle.getText().isEmpty() || rSMTextFull_nom.getText().isEmpty()){
+        if(rSComboMetro_filiere.getSelectedIndex() < 0 || rSComboMetro_option.getSelectedIndex() < 0 || rSComboMetro_niveau.getSelectedIndex() < 0 || rSComboMetro_semestre.getSelectedIndex() < 0 || rSComboMetro_ue_sigle.getSelectedIndex() < 0){
             JOptionPane.showMessageDialog(this, "Renseignement manquant !", "Champ vide !", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if(ue == null){
-            ueController.addUe(new bean.Ue(rSMTextFull_sigle.getText(), rSMTextFull_nom.getText(), rSComboMetro_option.getSelectedItem().toString(), rSComboMetro_filiere.getSelectedItem().toString(), rSComboMetro_semestre.getSelectedItem().toString(), rSComboMetro_niveau.getSelectedItem().toString()));
+        if(uniteEnseignementOption == null){
+            uniteEnseignementOptionController.addUniteEnseignementOption(
+                    optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(),
+                    uniteEnseignementController.getUniteEnseignement(rSComboMetro_ue_sigle.getSelectedItem().toString()).getId(),
+                    semestreController.getSemestre(rSComboMetro_semestre.getSelectedItem().toString()).getId()
+            );
         }else{
-            ueController.setUe(ue.getId_ue(), new bean.Ue(rSMTextFull_sigle.getText(), rSMTextFull_nom.getText(), rSComboMetro_option.getSelectedItem().toString(), rSComboMetro_filiere.getSelectedItem().toString(), rSComboMetro_semestre.getSelectedItem().toString(), rSComboMetro_niveau.getSelectedItem().toString()));
+            uniteEnseignementOptionController.updateUniteEnseignementOption(
+                    uniteEnseignementOption.getId(),
+                    optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_option.getSelectedItem().toString()).getId(),
+                    uniteEnseignementController.getUniteEnseignement(rSComboMetro_ue_sigle.getSelectedItem().toString()).getId(),
+                    semestreController.getSemestre(rSComboMetro_semestre.getSelectedItem().toString()).getId()
+            );
         }
+        success_information();
         this.dispose();
     }//GEN-LAST:event_rSButton_validerActionPerformed
 
@@ -262,6 +275,7 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
     private final NiveauController niveauController;
     private final UniteEnseignementController uniteEnseignementController;
     private UniteEnseignementOption uniteEnseignementOption;
+    private final UniteEnseignementOptionController uniteEnseignementOptionController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -313,5 +327,8 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
         uniteEnseignementController.getUniteEnseignements().forEach((u) -> {
             rSComboMetro_ue_sigle.addItem(u.getSigle());
         });
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

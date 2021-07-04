@@ -128,7 +128,7 @@ public class SemestreController {
     public ArrayList<Semestre> getSemestres(){
         ArrayList<Semestre> listSemestre = new ArrayList<>();
         try {
-            String req = "SELECT * FROM semestre ";
+            String req = "SELECT * FROM semestres ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
@@ -144,9 +144,11 @@ public class SemestreController {
     public ArrayList<Semestre> getSemestres(int id_niveau){
         ArrayList<Semestre> listSemestre = new ArrayList<>();
         try {
-            String req = "SELECT * FROM semestre WHERE id_niveau = ? ";
+            String req = "SELECT * FROM semestres WHERE id > 0 ";
+            if(id_niveau != 0){
+                req += "AND id_niveau ='" + id_niveau + "' ";
+            }
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_niveau);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){

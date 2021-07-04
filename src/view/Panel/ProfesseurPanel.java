@@ -5,15 +5,19 @@
  */
 package view.panel;
 
+import bean.Nationalite;
 import bean.Professeur;
 import controller.NationaliteController;
 import controller.ProfesseurController;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import rojerusan.RSPanelImage;
+import view.dialog.ProfesseurDialog;
 
 /**
  *
@@ -268,14 +272,14 @@ public class ProfesseurPanel extends RSPanelImage {
             dialog.ContacterDialog contacter = new dialog.ContacterDialog(null, true);
             contacter.setVisible(true);
         }else{
-            String matricule = jTable_professeur.getValueAt(row, 6).toString();
-            dialog.ContacterDialog contacter = new dialog.ContacterDialog(null, true, professeurController.getProfesseur(matricule));
+            int id = Integer.parseInt(jTable_professeur.getValueAt(row, 8).toString());
+            dialog.ContacterDialog contacter = new dialog.ContacterDialog(null, true, professeurController.getProfesseur(id));
             contacter.setVisible(true);
         }
     }//GEN-LAST:event_menu_item_smsActionPerformed
 
     private void menu_item_add_professeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_add_professeurActionPerformed
-        dialog.ProfesseurDialog professeurDialog = new dialog.ProfesseurDialog(null, true);
+        ProfesseurDialog professeurDialog = new ProfesseurDialog(null, true);
         professeurDialog.setVisible(true);
         initTable();
     }//GEN-LAST:event_menu_item_add_professeurActionPerformed
@@ -285,37 +289,27 @@ public class ProfesseurPanel extends RSPanelImage {
         if(row < 0){
             return;
         }
-        String matricule = jTable_professeur.getValueAt(row, 6).toString();
-        dialog.ProfesseurDialog professeurDialog = new dialog.ProfesseurDialog(null, true, matricule);
+        int id = Integer.parseInt(jTable_professeur.getValueAt(row, 8).toString());
+        ProfesseurDialog professeurDialog = new ProfesseurDialog(null, true, professeurController.getProfesseur(id));
         professeurDialog.setVisible(true);
         initTable();
     }//GEN-LAST:event_menu_item_update_professeurActionPerformed
 
     private void menu_item_remove_professeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_remove_professeurActionPerformed
-        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'enseignant " + jTable_professeur.getValueAt(jTable_professeur.getSelectedRow(), 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
+        int row = jTable_professeur.getSelectedRow();
+        if(row < 0){
+            return;
+        }
+        int choice = JOptionPane.showConfirmDialog(this, "Etes vous sure de vouloir suprimer l'enseignant " + jTable_professeur.getValueAt(row, 2) + " ?", "Action irréversible", JOptionPane.YES_NO_OPTION);
         if(choice == 0){
-            professeurController.removeProfesseur(jTable_professeur.getValueAt(jTable_professeur.getSelectedRow(), 6).toString());
+            int id = Integer.parseInt(jTable_professeur.getValueAt(row, 8).toString());
+            professeurController.removeProfesseur(id);
         }
         initTable();
     }//GEN-LAST:event_menu_item_remove_professeurActionPerformed
 
     private void jScrollPane3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane3MouseReleased
-        int r = jTable_professeur.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_professeur.getRowCount()){
-            jTable_professeur.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_professeur.clearSelection();
-        }
-        int index = jTable_professeur.getSelectedRow();
-        if(index < 0){
-            menu_item_remove_professeur.setEnabled(false);
-            menu_item_update_professeur.setEnabled(false);
-        }else{
-            menu_item_add_professeur.setEnabled(true);
-            menu_item_remove_professeur.setEnabled(true);
-            menu_item_update_professeur.setEnabled(true);
-        }
+        action_popup_menu(evt);
         if(evt.isPopupTrigger() && evt.getComponent() instanceof JScrollPane){
             popup_table.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table.setVisible(true);
@@ -323,22 +317,7 @@ public class ProfesseurPanel extends RSPanelImage {
     }//GEN-LAST:event_jScrollPane3MouseReleased
 
     private void jTable_professeurMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_professeurMouseReleased
-        int r = jTable_professeur.rowAtPoint(evt.getPoint());
-        if(r >=0 && r < jTable_professeur.getRowCount()){
-            jTable_professeur.setRowSelectionInterval(r, r);
-
-        }else{
-            jTable_professeur.clearSelection();
-        }
-        int index = jTable_professeur.getSelectedRow();
-        if(index < 0){
-            menu_item_remove_professeur.setEnabled(false);
-            menu_item_update_professeur.setEnabled(false);
-        }else{
-            menu_item_add_professeur.setEnabled(true);
-            menu_item_remove_professeur.setEnabled(true);
-            menu_item_update_professeur.setEnabled(true);
-        }
+        action_popup_menu(evt);
         if(evt.isPopupTrigger() && evt.getComponent() instanceof JTable){
             popup_table.show(evt.getComponent(), evt.getX(), evt.getY());
             popup_table.setVisible(true);
@@ -384,30 +363,41 @@ public class ProfesseurPanel extends RSPanelImage {
     private rojerusan.RSComboMetro rSComboMetro_titre;
     private rojeru_san.RSMTextFull rSMTextFull_recherche;
     // End of variables declaration//GEN-END:variables
-
-    
-
-    private void success_information() {
-        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-    }
-
     
     private void initTable(){
-        String entete[] = {"N°", "MATRICULE", "NOM ET PRENOM", "DIPLOME", "NATIONALITE", "NUMERO DE TEL.", "ID"};
+        String entete[] = {"N°", "MATRICULE", "NOM ET PRENOM", "DIPLOME", "NATIONALITE", "NUMERO DE TEL.", "DATE DE NAISSANCE", "LIEU DE NAISSANCE", "ID"};
         DefaultTableModel dt=new DefaultTableModel(null,entete);
         dt.setRowCount(0);
-        
-        ArrayList<Professeur> list_professeur = professeurController.getListProfesseur();
+        int id_nationalite = 0;
+        String sexe = null, titre = null, rechercher = null;
+        if(rSComboMetro_nationalite.getSelectedIndex() > -1){
+            Nationalite nationalite = nationaliteController.getNationalite(rSComboMetro_nationalite.getSelectedItem().toString());
+            if(nationalite != null){
+                id_nationalite = nationalite.getId();
+            }
+        }
+        if(rSComboMetro_sexe.getSelectedIndex() > -1){
+            sexe = rSComboMetro_sexe.getSelectedItem().toString();
+        }
+        if(rSComboMetro_titre.getSelectedIndex() > -1){
+            titre = rSComboMetro_titre.getSelectedItem().toString();
+        }
+        if(!rSMTextFull_recherche.getText().isBlank()){
+            rechercher = rSMTextFull_recherche.getText();
+        }
+        ArrayList<Professeur> list_professeur = professeurController.getProfesseurs(id_nationalite, sexe, titre, rechercher);
 
         for(int i = 0; i< list_professeur.size(); i++){
-            Object colonne[]=new Object[7];
+            Object colonne[] = new Object[9];
             colonne[0] = i + 1;
             colonne[1] = list_professeur.get(i).getMatricule();
-            colonne[2] = list_professeur.get(i).getNom_prenom();
+            colonne[2] = list_professeur.get(i).getTitre() + " " + list_professeur.get(i).getNom_prenom();
             colonne[3] = list_professeur.get(i).getDiplome();
-            colonne[4] = list_professeur.get(i).getNationalite();
+            colonne[4] = nationaliteController.getNationalite(list_professeur.get(i).getId_nationalite()).getNationalite();
             colonne[5] = list_professeur.get(i).getContact();
-            colonne[6] = list_professeur.get(i).getMatricule();
+            colonne[6] = list_professeur.get(i).getDate_de_naissance();
+            colonne[7] = list_professeur.get(i).getLieu_de_naissance();
+            colonne[8] = list_professeur.get(i).getId();
             dt.addRow(colonne);
         }
         this.jTable_professeur.setModel(dt);
@@ -418,28 +408,66 @@ public class ProfesseurPanel extends RSPanelImage {
             jTable_professeur.getColumnModel().getColumn(1).setMinWidth(105);
             jTable_professeur.getColumnModel().getColumn(1).setPreferredWidth(105);
             jTable_professeur.getColumnModel().getColumn(1).setMaxWidth(105);
-            jTable_professeur.getColumnModel().getColumn(3).setMinWidth(200);
-            jTable_professeur.getColumnModel().getColumn(3).setPreferredWidth(200);
-            jTable_professeur.getColumnModel().getColumn(3).setMaxWidth(200);
+            
+            jTable_professeur.getColumnModel().getColumn(2).setMinWidth(400);
+            jTable_professeur.getColumnModel().getColumn(2).setPreferredWidth(400);
+            jTable_professeur.getColumnModel().getColumn(2).setMaxWidth(400);
+            
+            jTable_professeur.getColumnModel().getColumn(3).setMinWidth(300);
+            jTable_professeur.getColumnModel().getColumn(3).setPreferredWidth(300);
+            jTable_professeur.getColumnModel().getColumn(3).setMaxWidth(300);
+            
             jTable_professeur.getColumnModel().getColumn(4).setMinWidth(140);
             jTable_professeur.getColumnModel().getColumn(4).setPreferredWidth(140);
             jTable_professeur.getColumnModel().getColumn(4).setMaxWidth(140);
-            jTable_professeur.getColumnModel().getColumn(5).setMinWidth(200);
-            jTable_professeur.getColumnModel().getColumn(5).setPreferredWidth(200);
-            jTable_professeur.getColumnModel().getColumn(5).setMaxWidth(200);
-            jTable_professeur.getColumnModel().getColumn(6).setMinWidth(10);
-            jTable_professeur.getColumnModel().getColumn(6).setPreferredWidth(10);
-            jTable_professeur.getColumnModel().getColumn(6).setMaxWidth(10);
+            jTable_professeur.getColumnModel().getColumn(5).setMinWidth(150);
+            jTable_professeur.getColumnModel().getColumn(5).setPreferredWidth(150);
+            jTable_professeur.getColumnModel().getColumn(5).setMaxWidth(150);
+            
+            jTable_professeur.getColumnModel().getColumn(6).setMinWidth(150);
+            jTable_professeur.getColumnModel().getColumn(6).setPreferredWidth(150);
+            jTable_professeur.getColumnModel().getColumn(6).setMaxWidth(150);
+            
+            jTable_professeur.getColumnModel().getColumn(7).setMinWidth(150);
+            jTable_professeur.getColumnModel().getColumn(7).setPreferredWidth(150);
+            jTable_professeur.getColumnModel().getColumn(7).setMaxWidth(150);
+            
+            jTable_professeur.getColumnModel().getColumn(8).setMinWidth(5);
+            jTable_professeur.getColumnModel().getColumn(8).setPreferredWidth(5);
+            jTable_professeur.getColumnModel().getColumn(8).setMaxWidth(5);
             jTable_professeur.setRowHeight(30);
         }
+        jTable_professeur.getTableHeader().setBackground(new Color(0,112,192));
+        jTable_professeur.getTableHeader().setForeground(Color.white);
+        jTable_professeur.getTableHeader().setFont(new Font("Cambria Math", Font.BOLD, 13));
+        jTable_professeur.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
     private void initCbNationalite() {
         rSComboMetro_nationalite.removeAllItems();
-        nationaliteController.getListNationalite().forEach((n) -> {
+        nationaliteController.getNationalites().forEach((n) -> {
             rSComboMetro_nationalite.addItem(n.getNationalite());
         });
         if(rSComboMetro_nationalite.getItemCount() > 1){
             rSComboMetro_nationalite.addItem("Toutes");
+        }
+    }
+
+    private void action_popup_menu(java.awt.event.MouseEvent evt) {
+        int r = jTable_professeur.rowAtPoint(evt.getPoint());
+        if(r >=0 && r < jTable_professeur.getRowCount()){
+            jTable_professeur.setRowSelectionInterval(r, r);
+
+        }else{
+            jTable_professeur.clearSelection();
+        }
+        int index = jTable_professeur.getSelectedRow();
+        if(index < 0){
+            menu_item_remove_professeur.setEnabled(false);
+            menu_item_update_professeur.setEnabled(false);
+        }else{
+            menu_item_add_professeur.setEnabled(true);
+            menu_item_remove_professeur.setEnabled(true);
+            menu_item_update_professeur.setEnabled(true);
         }
     }
 }

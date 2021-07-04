@@ -5,12 +5,13 @@
  */
 package view.frame;
 
-import view.panel.ConfigPan;
+import view.panel.ConfigPanel;
 import view.panel.EtudiantPanel;
 import view.panel.FiliereOptionPanel;
 import view.panel.NotePan;
 import view.panel.ProfesseurPanel;
 import view.panel.UniteEnseignementElementConstitutifPanel;
+import view.panel.UniteEnseignementOptionPanel;
 
 /**
  *
@@ -90,6 +91,11 @@ public class ConfigFrame extends javax.swing.JFrame {
         jMenu2.add(menu_item_ue);
 
         jMenuItem_ue_option.setText("Unité d'enseignement par Option");
+        jMenuItem_ue_option.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_ue_optionActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem_ue_option);
         jMenu2.add(jSeparator3);
 
@@ -178,7 +184,7 @@ public class ConfigFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_item_gestion_matiereActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.setContentPane(new ConfigPan());
+        this.setContentPane(new ConfigPanel());
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -188,6 +194,12 @@ public class ConfigFrame extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem_ue_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_ue_optionActionPerformed
+        this.setContentPane(new UniteEnseignementOptionPanel());
+        this.revalidate();
+        this.repaint();
+    }//GEN-LAST:event_jMenuItem_ue_optionActionPerformed
 
     /**
      * @param args the command line arguments

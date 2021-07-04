@@ -19,12 +19,12 @@ import view.dialog.NationaliteDialog;
  *
  * @author ATH
  */
-public class ConfigPan extends RSPanelImage {
+public class ConfigPanel extends RSPanelImage {
 
     /**
      * Creates new form ElevePan
      */
-    public ConfigPan() {
+    public ConfigPanel() {
         anneeController = new AnneeController();
         nationaliteController = new NationaliteController();
         parametreController = new ParametreController();

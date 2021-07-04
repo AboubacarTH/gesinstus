@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dialog;
+package view.dialog;
 
 import bean.Professeur;
 import controller.NationaliteController;
@@ -31,17 +31,17 @@ public class ProfesseurDialog extends javax.swing.JDialog {
         initMatricule();
     }
     
-    public ProfesseurDialog(java.awt.Frame parent, boolean modal, String matricule) {
+    public ProfesseurDialog(java.awt.Frame parent, boolean modal, Professeur professeur) {
         super(parent, modal);
         nationaliteController = new NationaliteController();
         professeurController = new ProfesseurController();
-        professeur = professeurController.getProfesseur(matricule);
+        this.professeur = professeur;
         initComponents();
         initCbNationalite();
         initMatricule();
         try {
             rSComboMetro_titre.setSelectedItem(professeur.getTitre());
-            rSbComboMetro_nationalite.setSelectedItem(professeur.getNationalite());
+            rSbComboMetro_nationalite.setSelectedItem(nationaliteController.getNationalite(professeur.getId_nationalite()).getNationalite());
             if("Mr".equals(rSComboMetro_titre.getSelectedItem().toString())){
                 rSComboMetro_sexe.setSelectedItem("M");
             }else if("Mme".equals(rSComboMetro_titre.getSelectedItem().toString()) || "Mlle".equals(rSComboMetro_titre.getSelectedItem().toString())){
@@ -271,13 +271,36 @@ public class ProfesseurDialog extends javax.swing.JDialog {
         if(rSMTextFull_nom_prenom.getText().length() == 0 || rSMTextFull_contact.getText().length() == 0 || rSbComboMetro_nationalite.getSelectedIndex() <0 || rSMTextFull_matricule.getText().length() == 0){
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
+            Date date = new Date(jDateChooser_date_de_naissance.getDate().getTime());
             if(professeur == null){
-                java.sql.Date date = new Date(jDateChooser_date_de_naissance.getDate().getTime());
-                professeurController.addProfesseur(rSMTextFull_matricule.getText(), rSMTextFull_nom_prenom.getText(), date, rSMTextFull_lieu_de_naissance.getText(), rSbComboMetro_nationalite.getSelectedItem().toString(), rSMTextFull_contact.getText(), rSComboMetro_titre.getSelectedItem().toString(), rSMTextFull_diplome.getText(), true, rSMPassView_mot_de_passe.getText(), rSComboMetro_sexe.getSelectedItem().toString());
+                professeurController.addProfesseur(
+                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(),
+                        rSMTextFull_matricule.getText(),
+                        rSMTextFull_nom_prenom.getText(),
+                        date,
+                        rSMTextFull_lieu_de_naissance.getText(),
+                        rSMTextFull_contact.getText(),
+                        rSComboMetro_titre.getSelectedItem().toString(),
+                        rSMTextFull_diplome.getText(),
+                        rSComboMetro_sexe.getSelectedItem().toString(),
+                        rSMPassView_mot_de_passe.getText()
+                );
             }else{
-                java.sql.Date date = new Date(jDateChooser_date_de_naissance.getDate().getTime());
-                professeurController.setProfesseur(professeur, new Professeur(rSMTextFull_matricule.getText(), rSMTextFull_nom_prenom.getText(), date, rSMTextFull_lieu_de_naissance.getText(), rSbComboMetro_nationalite.getSelectedItem().toString(), rSMTextFull_contact.getText(), rSComboMetro_titre.getSelectedItem().toString(), rSMTextFull_diplome.getText(), true, rSMPassView_mot_de_passe.getText(), rSComboMetro_sexe.getSelectedItem().toString()));
+                professeurController.updateProfesseur(
+                        professeur.getId(),
+                        nationaliteController.getNationalite(rSbComboMetro_nationalite.getSelectedItem().toString()).getId(),
+                        rSMTextFull_matricule.getText(),
+                        rSMTextFull_nom_prenom.getText(),
+                        date,
+                        rSMTextFull_lieu_de_naissance.getText(),
+                        rSMTextFull_contact.getText(),
+                        rSComboMetro_titre.getSelectedItem().toString(),
+                        rSMTextFull_diplome.getText(),
+                        rSComboMetro_sexe.getSelectedItem().toString(),
+                        rSMPassView_mot_de_passe.getText()
+                );
             }
+            success_information();
             this.dispose();
         }
     }//GEN-LAST:event_btn_validerActionPerformed
@@ -338,7 +361,7 @@ public class ProfesseurDialog extends javax.swing.JDialog {
             dialog.setVisible(true);
         });
     }
-    private bean.Professeur professeur = null;
+    private Professeur professeur;
     private final NationaliteController nationaliteController;
     private final ProfesseurController professeurController;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -367,15 +390,19 @@ public class ProfesseurDialog extends javax.swing.JDialog {
 
     private void initCbNationalite() {
         rSbComboMetro_nationalite.removeAllItems();
-        nationaliteController.getListNationalite().forEach((n) -> {
+        nationaliteController.getNationalites().forEach((n) -> {
             rSbComboMetro_nationalite.addItem(n.getNationalite());
         });
     }
     
     
     private void initMatricule(){
-        int rang = professeurController.getProfesseurCount() + 1;
-        String matricule = String.format("%03d", rang) + "/" + rSComboMetro_titre.getSelectedItem().toString().charAt(0);
+        int rang = 1;
+        String matricule = "PR/" + String.format("%03d", rang) + "/ISS";
+        while(professeurController.getProfesseur(matricule) != null){
+            rang++;
+            matricule = "PR/" + String.format("%03d", rang) + "/ISS";
+        }
         rSMTextFull_matricule.setText(matricule);
     }
     private void initSexe(){
@@ -384,5 +411,8 @@ public class ProfesseurDialog extends javax.swing.JDialog {
         }else if("Mme".equals(rSComboMetro_titre.getSelectedItem().toString()) || "Mlle".equals(rSComboMetro_titre.getSelectedItem().toString())){
             rSComboMetro_sexe.setSelectedItem("F");
         }
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

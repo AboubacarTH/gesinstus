@@ -107,10 +107,19 @@ public class UniteEnseignementOptionController {
         return null;
     }
         
-    public ArrayList<UniteEnseignementOption> getUniteEnseignementOptions(){
+    public ArrayList<UniteEnseignementOption> getUniteEnseignementOptions(int id_option, int id_semestre, String rechercher){
         try {
             ArrayList<UniteEnseignementOption> list = new ArrayList<>();
-            String req = "SELECT * FROM unite_enseignement_options ";
+            String req = "SELECT * FROM unite_enseignement_options JOIN unite_enseignements ON unite_enseignement_options.id_unite_enseignement = unite_enseignements.id WHERE unite_enseignement_options.id > 0 ";
+            if(id_option != 0){
+                req += "AND unite_enseignement_options.id_option ='" + id_option + "' ";
+            }
+            if(id_semestre != 0){
+                req += "AND unite_enseignement_options.id_semestre ='" + id_semestre + "' ";
+            }
+            if(rechercher != null){
+                req += "AND ( unite_enseignements.sigle LIKE '%" + rechercher + "%' OR unite_enseignements.nom LIKE '%" + rechercher + "%' ) ";
+            }
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();

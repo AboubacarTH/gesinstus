@@ -8,19 +8,9 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="menu_item_detail">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Voir les EC"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_detailActionPerformed"/>
-          </Events>
-        </MenuItem>
-        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
-        </Component>
         <MenuItem class="javax.swing.JMenuItem" name="menu_item_add_ue">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ajouter nouvelle unit&#xe9; d&apos;enseignemant"/>
+            <Property name="text" type="java.lang.String" value="Attribuer une nouvelle unit&#xe9; d&apos;enseignement pour une option"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_add_ueActionPerformed"/>
@@ -28,50 +18,20 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="menu_item_update_ue">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Modifier l&apos;unit&#xe9; d&apos;enseignemant"/>
+            <Property name="text" type="java.lang.String" value="Modifier l&apos;unit&#xe9; d&apos;enseignement de cette option"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_update_ueActionPerformed"/>
           </Events>
         </MenuItem>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+        </Component>
         <MenuItem class="javax.swing.JMenuItem" name="menu_item_remove_ue">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Retirer l&apos;unit&#xe9; d&apos;enseignemant"/>
+            <Property name="text" type="java.lang.String" value="Retirer l&apos;unit&#xe9; d&apos;enseignemant de cette option"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_remove_ueActionPerformed"/>
-          </Events>
-        </MenuItem>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPopupMenu" name="popup_table_ec">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="menu_item_add_ec">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ajouter nouveau element constitutif"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_add_ecActionPerformed"/>
-          </Events>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menu_item_update_ec">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Modifier  l&apos;element constitutif"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_update_ecActionPerformed"/>
-          </Events>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menu_item_remove_ec">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Retirer l&apos;element constitutif"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_item_remove_ecActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -109,7 +69,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" pref="450" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane4" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -124,9 +83,7 @@
                   <Component id="jPanel4" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane3" pref="237" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane4" min="-2" pref="220" max="-2" attributes="0"/>
+              <Component id="jScrollPane3" pref="463" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -137,7 +94,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Liste des unit&#xe9;s d&apos;enseignemants">
+            <TitledBorder title="Liste des unit&#xe9;s d&apos;enseignemants par option">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder bevelType="0">
                   <Color PropertyName="highlight" blue="66" green="33" red="0" type="rgb"/>
@@ -391,93 +348,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Option"/>
           </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Liste des elements constitutifs">
-              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                <EtchetBorder bevelType="0">
-                  <Color PropertyName="highlight" blue="66" green="33" red="0" type="rgb"/>
-                  <Color PropertyName="shadow" blue="66" green="66" red="0" type="rgb"/>
-                </EtchetBorder>
-              </Border>
-              <Font PropertyName="font" name="Tahoma" size="12" style="0"/>
-            </TitledBorder>
-          </Border>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jScrollPane4MouseReleased"/>
-      </Events>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable_ec">
-          <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="0">
-                <Column editable="false" title="N&#xb0;" type="java.lang.Object"/>
-                <Column editable="false" title="SIGLE" type="java.lang.Object"/>
-                <Column editable="false" title="ELEMENT CONSTITUTIF" type="java.lang.Object"/>
-                <Column editable="false" title="CM" type="java.lang.Object"/>
-                <Column editable="false" title="TD_TP" type="java.lang.Object"/>
-                <Column editable="false" title="VHE" type="java.lang.Object"/>
-                <Column editable="false" title="CREDIT" type="java.lang.Object"/>
-              </Table>
-            </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0">
-                <Column maxWidth="50" minWidth="50" prefWidth="50" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="105" minWidth="105" prefWidth="105" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="75" minWidth="75" prefWidth="75" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="75" minWidth="75" prefWidth="75" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="75" minWidth="75" prefWidth="75" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="75" minWidth="75" prefWidth="75" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-              </TableColumnModel>
-            </Property>
-            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable_ecMouseReleased"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

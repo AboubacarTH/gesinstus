@@ -7,21 +7,26 @@
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/EtudiantController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/UniteEnseignementController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/UniteEnseignementElementConstitutifPanel.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/UniteEnseignementOptionController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/OptionDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/ParametreController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/UniteEnseignementOptionDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/UniteEnseignementOptionPanel.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/ConfigPanel.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/ElementConstitutifController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/bean/Professeur.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/EtudiantDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/bean/Etudiant.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/NationaliteDialog.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/ProfesseurDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/FiliereDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/SemestreController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/ProfesseurPanel.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/OptionController.java</file>
+            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/ProfesseurController.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/database/ConnecterDB.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/AnneeDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/EtudiantPanel.java</file>
-            <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/panel/ConfigPan.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/frame/ConfigFrame.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/view/dialog/ElementConstitutifDialog.java</file>
             <file>file:/C:/Users/ATH/Documents/NetBeansProjects/Gesinstus/src/controller/NiveauController.java</file>
