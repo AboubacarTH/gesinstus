@@ -6,6 +6,7 @@
 package controller;
 
 import bean.UniteEnseignementOption;
+import bean.UniteEnseignementOptionTable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,12 +111,12 @@ public class UniteEnseignementOptionController {
     public ArrayList<UniteEnseignementOption> getUniteEnseignementOptions(int id_option, int id_semestre, String rechercher){
         try {
             ArrayList<UniteEnseignementOption> list = new ArrayList<>();
-            String req = "SELECT * FROM unite_enseignement_options JOIN unite_enseignements ON unite_enseignement_options.id_unite_enseignement = unite_enseignements.id WHERE unite_enseignement_options.id > 0 ";
+            String req = "SELECT unite_enseignement_options.id AS id, unite_enseignement_options.id_option AS id_option, unite_enseignement_options.id_unite_enseignement AS id_unite_enseignement, unite_enseignement_options.id_semestre AS id_semestre FROM unite_enseignement_options JOIN unite_enseignements ON unite_enseignement_options.id_unite_enseignement = unite_enseignements.id WHERE unite_enseignement_options.id > '0' ";
             if(id_option != 0){
-                req += "AND unite_enseignement_options.id_option ='" + id_option + "' ";
+                req += "AND unite_enseignement_options.id_option = '" + id_option + "' ";
             }
             if(id_semestre != 0){
-                req += "AND unite_enseignement_options.id_semestre ='" + id_semestre + "' ";
+                req += "AND unite_enseignement_options.id_semestre = '" + id_semestre + "' ";
             }
             if(rechercher != null){
                 req += "AND ( unite_enseignements.sigle LIKE '%" + rechercher + "%' OR unite_enseignements.nom LIKE '%" + rechercher + "%' ) ";
@@ -125,6 +126,34 @@ public class UniteEnseignementOptionController {
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
                 list.add(new UniteEnseignementOption(resultSet.getInt("id"), resultSet.getInt("id_option"), resultSet.getInt("id_unite_enseignement"), resultSet.getInt("id_semestre")));
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(UniteEnseignementOptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public ArrayList<UniteEnseignementOptionTable> getUniteEnseignementOptionTables(int id_option, int id_semestre, String rechercher){
+        try {
+            ArrayList<UniteEnseignementOptionTable> list = new ArrayList<>();
+            String req = "SELECT unite_enseignement_options.id AS id, unite_enseignement_options.id_option AS id_option, unite_enseignement_options.id_unite_enseignement AS id_unite_enseignement, options.id_filiere AS id_filiere, unite_enseignement_options.id_semestre AS id_semestre FROM unite_enseignement_options "
+                    + "JOIN unite_enseignements ON unite_enseignement_options.id_unite_enseignement = unite_enseignements.id "
+                    + "JOIN options ON unite_enseignement_options.id_option = options.id "
+                    + "WHERE unite_enseignement_options.id > '0' ";
+            if(id_option != 0){
+                req += "AND unite_enseignement_options.id_option = '" + id_option + "' ";
+            }
+            if(id_semestre != 0){
+                req += "AND unite_enseignement_options.id_semestre = '" + id_semestre + "' ";
+            }
+            if(rechercher != null){
+                req += "AND ( unite_enseignements.sigle LIKE '%" + rechercher + "%' OR unite_enseignements.nom LIKE '%" + rechercher + "%' ) ";
+            }
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                list.add(new UniteEnseignementOptionTable(resultSet.getInt("id"), resultSet.getInt("id_option"), resultSet.getInt("id_unite_enseignement"), resultSet.getInt("id_filiere"), resultSet.getInt("id_semestre")));
             }
             return list;
         } catch (SQLException ex) {

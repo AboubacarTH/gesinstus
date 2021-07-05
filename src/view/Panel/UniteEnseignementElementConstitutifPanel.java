@@ -474,7 +474,7 @@ public class UniteEnseignementElementConstitutifPanel extends RSPanelImage {
             colonne[2] = list_ec.get(i).getNom();
             VolumeHoraireCours vhc;
             try {
-                vhc = volumeHoraireCoursController.getVolumeHoraireCours(list_ec.get(id).getId());
+                vhc = volumeHoraireCoursController.getVolumeHoraireCours(list_ec.get(i).getId());
             } catch (Exception e) {
                 vhc = null;
             }
@@ -526,7 +526,7 @@ public class UniteEnseignementElementConstitutifPanel extends RSPanelImage {
     private void mise_a_jour_note() {
         int row = jTable_ec.getSelectedRow();
         int col = jTable_ec.getSelectedColumn();        
-        if(col < 3){
+        if(col < 3 || col > 6){
             update_table_ec();
             return;
         }
@@ -538,12 +538,20 @@ public class UniteEnseignementElementConstitutifPanel extends RSPanelImage {
             update_table_ec();
             return;
         }
-//        if(valeur < 0.00 || valeur > 20.00){
-//            JOptionPane.showMessageDialog(this, "Valeur incorrect !\nLa note à saisir doit être incluse entre 0 et 20!", "Valeur incorrecte ", JOptionPane.INFORMATION_MESSAGE);
-//            update_table_ec();
-//            return;
-//        }
-//        ecController.setNote(jTable_ec.getValueAt(row, 1).toString(), jTable_ec.getModel().getColumnName(col), valeur);
+        if(valeur < 0.00){
+            JOptionPane.showMessageDialog(this, "Valeur incorrect !\nLa note à saisir doit être incluse entre 0 et 20!", "Valeur incorrecte ", JOptionPane.INFORMATION_MESSAGE);
+            update_table_ec();
+            return;
+        }
+        int id = Integer.parseInt(jTable_ec.getValueAt(row, 7).toString());
+        String columnName = jTable_ec.getModel().getColumnName(col);
+        if(col < 5){
+            volumeHoraireCoursController.updateNote(id, columnName, valeur);
+            return;
+        }
+        if(col < 7){
+            elementConstitutifController.updateNote(id, columnName, valeur);
+        }
     }
 
     private void action_popup_menu_ue(java.awt.event.MouseEvent evt) {

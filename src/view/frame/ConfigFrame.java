@@ -8,7 +8,7 @@ package view.frame;
 import view.panel.ConfigPanel;
 import view.panel.EtudiantPanel;
 import view.panel.FiliereOptionPanel;
-import view.panel.NotePan;
+import view.panel.NotePanel;
 import view.panel.ProfesseurPanel;
 import view.panel.UniteEnseignementElementConstitutifPanel;
 import view.panel.UniteEnseignementOptionPanel;
@@ -178,7 +178,7 @@ public class ConfigFrame extends javax.swing.JFrame {
 
     private void menu_item_gestion_matiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_gestion_matiereActionPerformed
         //this.setContentPane(new CoursPan());
-        this.setContentPane(new NotePan());
+        this.setContentPane(new NotePanel());
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_menu_item_gestion_matiereActionPerformed

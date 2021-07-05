@@ -420,7 +420,7 @@ public class FiliereOptionPanel extends RSPanelImage {
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
             colonne[1] = list_filiere.get(i).getFiliere();
-            colonne[2] = etudiantController.getEtudiants(id_annee, list_filiere.get(i).getId()).size();
+            colonne[2] = etudiantController.getEtudiants(id_annee, list_filiere.get(i).getId(), 0, 0, 0, null, null).size();
             colonne[3] = list_filiere.get(i).getId();
             dt.addRow(colonne);
         }
@@ -462,7 +462,7 @@ public class FiliereOptionPanel extends RSPanelImage {
             Object colonne[] = new Object[4];
             colonne[0] = i + 1;
             colonne[1] = filiereController.getFiliere(list_option.get(i).getId_filiere()).getFiliere() + " / " + list_option.get(i).getOption();
-            colonne[2] = etudiantController.getEtudiants(id_annee, id_filiere, list_option.get(i).getId()).size();
+            colonne[2] = etudiantController.getEtudiants(id_annee, id_filiere, list_option.get(i).getId(), 0, 0, null, null).size();
             colonne[3] = list_option.get(i).getId();
             dt.addRow(colonne);
         }

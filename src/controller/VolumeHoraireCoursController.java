@@ -99,4 +99,31 @@ public class VolumeHoraireCoursController {
         }
         return null;
     }
+
+    public void updateNote(int id, String columnName, double valeur) {
+        String column;
+        switch(columnName){
+            case "CM" :
+                column = "cm";
+                break;
+            case "TD_TP" :
+                column = "td_tp";
+                break;
+                default:
+                    column = "";
+                    break;
+        }
+        if(getVolumeHoraireCours(id) == null){
+            addVolumeHoraireCours(id, 0.0, 0.0, 0.0);
+        }
+        try {
+            String req = "UPDATE volume_horaire_cours SET " + column +" = ? WHERE id_element_constitutif = ? ";
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setDouble(1, valeur);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(VolumeHoraireCoursController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -247,7 +247,7 @@ public class ElementConstitutifDialog extends javax.swing.JDialog {
 
     private void initCbUe() {
         rSComboMetro_sigle_ue.removeAllItems();
-        uniteEnseignementController.getUniteEnseignements().forEach((u) -> {
+        uniteEnseignementController.getUniteEnseignements(null).forEach((u) -> {
             rSComboMetro_sigle_ue.addItem(u.getSigle());
         });
     }

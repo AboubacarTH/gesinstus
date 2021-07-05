@@ -319,7 +319,7 @@ public class EtudiantDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-        if(rSMTextFull_nom_prenom.getText().length() == 0 || rSMTextFull_contact.getText().length() == 0 || rSbComboMetro_nationalite.getSelectedIndex() <0 || rSMTextFull_matricule.getText().length() == 0){
+        if(rSComboMetro_annee.getSelectedIndex() < 0 || rSMTextFull_nom_prenom.getText().length() == 0 || rSMTextFull_contact.getText().length() == 0 || rSbComboMetro_nationalite.getSelectedIndex() <0 || rSMTextFull_matricule.getText().length() == 0 || rSComboMetro_niveau.getSelectedIndex() < 0 || rSComboMetro_option.getSelectedIndex() < 0){
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(etudiant == null){

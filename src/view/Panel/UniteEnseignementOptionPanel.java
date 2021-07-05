@@ -9,7 +9,8 @@ import bean.Filiere;
 import bean.Niveau;
 import bean.Option;
 import bean.Semestre;
-import bean.UniteEnseignementOption;
+import bean.UniteEnseignement;
+import bean.UniteEnseignementOptionTable;
 import controller.FiliereController;
 import controller.NiveauController;
 import controller.OptionController;
@@ -159,11 +160,6 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED), "Filtrage table", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
         rSMTextFull_rechercher.setPlaceholder("Rechercher");
-        rSMTextFull_rechercher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rSMTextFull_rechercherActionPerformed(evt);
-            }
-        });
         rSMTextFull_rechercher.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 rSMTextFull_rechercherKeyReleased(evt);
@@ -211,7 +207,7 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(rSMTextFull_rechercher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -342,10 +338,6 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
         }
     }//GEN-LAST:event_jTable_ueMouseReleased
 
-    private void rSMTextFull_rechercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMTextFull_rechercherActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rSMTextFull_rechercherActionPerformed
-
     private void rSComboMetro_niveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSComboMetro_niveauActionPerformed
         initCbSemestre();
         update_table_ueo();
@@ -437,9 +429,11 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
     private void initCbSemestre() {
         rSComboMetro_semestre.removeAllItems();
         int id_niveau = 0;
-        Niveau niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString());
-        if(niveau != null){
-            id_niveau = niveau.getId();
+        if(rSComboMetro_niveau.getSelectedIndex() > -1){
+            Niveau niveau = niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString());
+            if(niveau != null){
+                id_niveau = niveau.getId();
+            }
         }
         semestreController.getSemestres(id_niveau).forEach((s) -> {
             rSComboMetro_semestre.addItem(s.getSemestre());
@@ -448,28 +442,18 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
             rSComboMetro_semestre.addItem("Toutes");
         }
     }
-
-//    private void success_information() {
-//        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
-//    }
     private void update_table_ueo() {
         String entete[] = {"N°", "FILIERE/OPTION", "SEMESTRE", "SIGLE", "UNITE D'ENSEIGNEMANT", "ID"};
         DefaultTableModel dt = new DefaultTableModel(null, entete);
         dt.setRowCount(0);
         
         String rechercher = null;
-        int id_option = 0, id_filiere = 0, id_semestre = 0;
+        int id_option = 0, id_semestre = 0;
         if(rSMTextFull_rechercher.getText().length() > 0){
             rechercher = rSMTextFull_rechercher.getText();
         }
-        if(rSComboMetro_filiere.getSelectedIndex() > -1){
-            Filiere filiere = filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString());
-            if(filiere != null){
-                id_filiere = filiere.getId();
-            }
-        }
-        if(rSComboMetro_options.getSelectedIndex() > -1){
-            Option option = optionController.getOption(id_filiere, rSComboMetro_options.getSelectedItem().toString());
+        if(rSComboMetro_options.getSelectedIndex() > -1 && rSComboMetro_filiere.getSelectedIndex() > -1){
+            Option option = optionController.getOption(filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), rSComboMetro_options.getSelectedItem().toString());
             if(option != null){
                 id_option = option.getId();
             }
@@ -481,18 +465,21 @@ public class UniteEnseignementOptionPanel extends RSPanelImage {
             }
         }
         
-        ArrayList<UniteEnseignementOption> list_ueo = uniteEnseignementOptionController.getUniteEnseignementOptions(id_option, id_semestre, rechercher);
+        ArrayList<UniteEnseignementOptionTable> list = uniteEnseignementOptionController.getUniteEnseignementOptionTables(id_option, id_semestre, rechercher);
         
-        for (int i = 0; i < list_ueo.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("id_filiere : " + list.get(i).getId_filiere());
+            System.out.println("id_option : " + list.get(i).getId_option());
+            System.out.println("id_unite_enseignement : " + list.get(i).getId_unite_enseignement());
+            System.out.println("id : " + list.get(i).getId());
             Object colonne[] = new Object[6];
             colonne[0] = i + 1;
-            Option option = optionController.getOption(list_ueo.get(i).getId_option());
-            Filiere filiere = filiereController.getFiliere(option.getId_filiere());
-            colonne[1] = filiere.getFiliere() + " / " + option.getOption();
-            colonne[2] = semestreController.getSemestre(list_ueo.get(i).getId_semestre()).getSemestre();
-            colonne[3] = uniteEnseignementController.getUniteEnseignement(list_ueo.get(i).getId_unite_enseignement()).getSigle();
-            colonne[4] = uniteEnseignementController.getUniteEnseignement(list_ueo.get(i).getId_unite_enseignement()).getNom();
-            colonne[5] = list_ueo.get(i).getId();
+            colonne[1] = filiereController.getFiliere(list.get(i).getId_filiere()).getFiliere() + " / " + optionController.getOption(list.get(i).getId_option()).getOption();
+            colonne[2] = semestreController.getSemestre(list.get(i).getId_semestre()).getSemestre();
+            UniteEnseignement uniteEnseignement = uniteEnseignementController.getUniteEnseignement(list.get(i).getId_unite_enseignement());
+            colonne[3] = uniteEnseignement == null ? "" : uniteEnseignement.getSigle();
+            colonne[4] = uniteEnseignement == null ? "" : uniteEnseignement.getNom();
+            colonne[5] = list.get(i).getId();
             dt.addRow(colonne);
         }
         this.jTable_ue.setModel(dt);

@@ -18,10 +18,10 @@ public class UniteEnseignementOption {
     public UniteEnseignementOption() {
     }
 
-    public UniteEnseignementOption(int id, int id_unite_enseignement, int id_option, int id_semestre) {
+    public UniteEnseignementOption(int id, int id_option, int id_unite_enseignement, int id_semestre) {
         this.id = id;
-        this.id_unite_enseignement = id_unite_enseignement;
         this.id_option = id_option;
+        this.id_unite_enseignement = id_unite_enseignement;
         this.id_semestre = id_semestre;
     }
 

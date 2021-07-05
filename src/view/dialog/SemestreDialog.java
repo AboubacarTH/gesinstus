@@ -137,7 +137,7 @@ public class SemestreDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-        if(txt_semestre.getText().length() <= 0){
+        if(txt_semestre.getText().length() <= 0 || rSComboMetro_niveau.getSelectedIndex() < 0){
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(semestre == null){

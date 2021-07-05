@@ -324,7 +324,7 @@ public class UniteEnseignementOptionDialog extends javax.swing.JDialog {
 
     private void initCbSigleUe() {
         rSComboMetro_ue_sigle.removeAllItems();
-        uniteEnseignementController.getUniteEnseignements().forEach((u) -> {
+        uniteEnseignementController.getUniteEnseignements(null).forEach((u) -> {
             rSComboMetro_ue_sigle.addItem(u.getSigle());
         });
     }
