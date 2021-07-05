@@ -137,7 +137,9 @@ public class OptionDialog extends javax.swing.JDialog {
                     option.getId(),
                     filiereController.getFiliere(rSComboMetro_filiere.getSelectedItem().toString()).getId(), 
                     rSMTextFull_option.getText()
-            );        }
+            ); 
+        }
+        success_information();
         this.dispose();
     }//GEN-LAST:event_rSButton_validerActionPerformed
 
@@ -198,5 +200,8 @@ public class OptionDialog extends javax.swing.JDialog {
         filiereController.getFilieres().forEach((f) -> {
             rSComboMetro_filiere.addItem(f.getFiliere());
         });
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

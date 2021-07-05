@@ -32,15 +32,15 @@ public class AnneeController {
     
     /**
      *
-     * @param id_annee
+     * @param id
      * @param annee
      */
-    public void updateAnnee(int id_annee, String annee){
+    public void updateAnnee(int id, String annee){
         try {
-            String req = "UPDATE annee_scolaires SET annee = ? WHERE id_annee = ?";
+            String req = "UPDATE annee_scolaires SET annee = ? WHERE id = ?";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, annee);
-            preparedStatement.setInt(2, id_annee);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AnneeController.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,18 +49,18 @@ public class AnneeController {
 
     /**
      *
-     * @param id_annee
+     * @param id
      * @return Annee
      */
-    public Annee getAnnee(int id_annee){
+    public Annee getAnnee(int id){
         try {
-            String req = "SELECT * FROM annee_scolaires WHERE id_annee = ? ";
+            String req = "SELECT * FROM annee_scolaires WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_annee);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Annee(resultSet.getInt("id_annee"), resultSet.getString("annee"));
+                return new Annee(resultSet.getInt("id"), resultSet.getString("annee"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(AnneeController.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +81,7 @@ public class AnneeController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Annee(resultSet.getInt("id_annee"), resultSet.getString("annee"));
+                return new Annee(resultSet.getInt("id"), resultSet.getString("annee"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(AnneeController.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,7 +116,7 @@ public class AnneeController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listAnnee.add(new Annee(resultSet.getInt("id_annee"), resultSet.getString("annee")));
+                listAnnee.add(new Annee(resultSet.getInt("id"), resultSet.getString("annee")));
             }
             return listAnnee;
         } catch (SQLException ex) {
@@ -127,13 +127,13 @@ public class AnneeController {
     
     /**
      *
-     * @param id_annee
+     * @param id
      */
-    public void removeAnnee(int id_annee){
+    public void removeAnnee(int id){
         try {
-            String req = "DELETE FROM annee_scolaires WHERE id_annee = ? ";
+            String req = "DELETE FROM annee_scolaires WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_annee);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AnneeController.class.getName()).log(Level.SEVERE, null, ex);

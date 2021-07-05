@@ -131,6 +131,7 @@ public class FiliereDialog extends javax.swing.JDialog {
                         rSMTextFull_sigle.getText()
                 );
             }
+            success_information();
             this.dispose();
         }
     }//GEN-LAST:event_btn_validerActionPerformed
@@ -187,5 +188,7 @@ public class FiliereDialog extends javax.swing.JDialog {
     private rojeru_san.RSMTextFull rSMTextFull_filiere;
     private rojeru_san.RSMTextFull rSMTextFull_sigle;
     // End of variables declaration//GEN-END:variables
-
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

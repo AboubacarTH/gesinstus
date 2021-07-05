@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dialog;
+package view.dialog;
 
 import controller.NiveauController;
 import controller.SemestreController;
@@ -32,7 +32,7 @@ public class SemestreDialog extends javax.swing.JDialog {
      * Creates new form Cycle
      * @param parent
      * @param modal
-     * @param oldValue
+     * @param semestre
      */
     public SemestreDialog(java.awt.Frame parent, boolean modal, bean.Semestre semestre) {
         super(parent, modal);
@@ -41,7 +41,7 @@ public class SemestreDialog extends javax.swing.JDialog {
         niveauController = new NiveauController();
         initComponents();
         initCbNiveau();
-        rSComboMetro_niveau.setSelectedItem(semestre.getNiveau());
+        rSComboMetro_niveau.setSelectedItem(niveauController.getNiveau(this.semestre.getId_niveau()).getNiveau());
         txt_semestre.setText(semestre.getSemestre());
         jSpinner_priorite.setValue(semestre.getPriorite());
     }
@@ -62,6 +62,7 @@ public class SemestreDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         rSComboMetro_niveau = new rojerusan.RSComboMetro();
         jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion des semestres");
@@ -89,10 +90,11 @@ public class SemestreDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
@@ -100,7 +102,7 @@ public class SemestreDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_semestre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
                             .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
@@ -121,6 +123,8 @@ public class SemestreDialog extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(rSComboMetro_niveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_valider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -133,14 +137,24 @@ public class SemestreDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-        if(txt_semestre.getText().length() <= 0){
+        if(txt_semestre.getText().length() <= 0 || rSComboMetro_niveau.getSelectedIndex() < 0){
             JOptionPane.showMessageDialog(this, "Champ vide.", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(semestre == null){
-                semestreController.addSemestre(txt_semestre.getText(), rSComboMetro_niveau.getSelectedItem().toString(), (int) jSpinner_priorite.getValue());
+                semestreController.addSemestre(
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        txt_semestre.getText(),
+                        (int) jSpinner_priorite.getValue()
+                );
             }else{
-                semestreController.setSemestre(semestre, new bean.Semestre(txt_semestre.getText(), rSComboMetro_niveau.getSelectedItem().toString(), (int) jSpinner_priorite.getValue()));
+                semestreController.updateSemestre(
+                        semestre.getId(),
+                        niveauController.getNiveau(rSComboMetro_niveau.getSelectedItem().toString()).getId(),
+                        txt_semestre.getText(),
+                        (int) jSpinner_priorite.getValue()
+                );            
             }
+            success_information();
             this.dispose();
         }
     }//GEN-LAST:event_btn_validerActionPerformed
@@ -195,6 +209,7 @@ public class SemestreDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner_priorite;
     private rojerusan.RSComboMetro rSComboMetro_niveau;
     private rojeru_san.RSMTextFull txt_semestre;
@@ -202,8 +217,11 @@ public class SemestreDialog extends javax.swing.JDialog {
 
     private void initCbNiveau() {
         rSComboMetro_niveau.removeAllItems();
-        niveauController.getListNiveau().forEach((n) -> {
+        niveauController.getNiveaux().forEach((n) -> {
             rSComboMetro_niveau.addItem(n.getNiveau());
         });
+    }
+    private void success_information() {
+        JOptionPane.showMessageDialog(this, "Opération effectuée avec succes ", "Réussie !", JOptionPane.INFORMATION_MESSAGE);
     }
 }

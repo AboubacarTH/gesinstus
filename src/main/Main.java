@@ -7,6 +7,7 @@ package main;
 
 import database.ConnecterDB;
 import java.sql.Connection;
+import view.frame.MainFrame;
 
 /**
  *
@@ -22,6 +23,8 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         connection = new ConnecterDB().getConnection();
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.setVisible(true);
     }
 
     public static Connection getConnection() {

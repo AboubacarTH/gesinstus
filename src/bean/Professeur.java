@@ -23,7 +23,6 @@ public class Professeur {
     private String diplome;
     private String sexe;
     private String mot_de_passe;
-    private boolean actif;
 
     public Professeur() {
     }
@@ -43,7 +42,7 @@ public class Professeur {
      * @param mot_de_passe
      * @param actif
      */
-    public Professeur(int id, int id_nationalite, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String titre, String diplome, String sexe, String mot_de_passe, boolean actif) {
+    public Professeur(int id, int id_nationalite, String matricule, String nom_prenom, Date date_de_naissance, String lieu_de_naissance, String contact, String titre, String diplome, String sexe, String mot_de_passe) {
         this.id = id;
         this.id_nationalite = id_nationalite;
         this.matricule = matricule;
@@ -55,7 +54,6 @@ public class Professeur {
         this.diplome = diplome;
         this.sexe = sexe;
         this.mot_de_passe = mot_de_passe;
-        this.actif = actif;
     }
 
     public int getId() {
@@ -144,14 +142,5 @@ public class Professeur {
 
     public void setMot_de_passe(String mot_de_passe) {
         this.mot_de_passe = mot_de_passe;
-    }
-
-    public boolean isActif() {
-        return actif;
-    }
-
-    public void setActif(boolean actif) {
-        this.actif = actif;
-    }
-    
+    }    
 }

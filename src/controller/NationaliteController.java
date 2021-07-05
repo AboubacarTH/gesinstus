@@ -49,15 +49,15 @@ public class NationaliteController {
 
     /**
      *
-     * @param id_nationalite
+     * @param id
      * @param nationalite
      */
-    public void updateNationalite(int id_nationalite, String nationalite){
+    public void updateNationalite(int id, String nationalite){
         try {
-            String req = "UPDATE nationalites SET nationalite = ? WHERE id_nationalite = ? ";
+            String req = "UPDATE nationalites SET nationalite = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, nationalite);
-            preparedStatement.setInt(2, id_nationalite);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(NationaliteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,13 +66,13 @@ public class NationaliteController {
     
     /**
      *
-     * @param id_nationalite
+     * @param id
      */
-    public void removeNationalite(int id_nationalite){
+    public void removeNationalite(int id){
         try {
-            String req = "DELETE FROM nationalites WHERE id_nationalite = ?";
+            String req = "DELETE FROM nationalites WHERE id = ?";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_nationalite);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(NationaliteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,15 +80,15 @@ public class NationaliteController {
     }
     
     
-    public Nationalite getNationalite(int id_nationalite){
+    public Nationalite getNationalite(int id){
         try {
-            String req = "SELECT * FROM nationalites WHERE id_nationalite = ? ";
+            String req = "SELECT * FROM nationalites WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_nationalite);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return  new Nationalite(resultSet.getInt("id_nationalite"), resultSet.getString("nationalite"));
+                return  new Nationalite(resultSet.getInt("id"), resultSet.getString("nationalite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(NationaliteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,7 +103,7 @@ public class NationaliteController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return  new Nationalite(resultSet.getInt("id_nationalite"), resultSet.getString("nationalite"));
+                return  new Nationalite(resultSet.getInt("id"), resultSet.getString("nationalite"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(NationaliteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,7 +118,7 @@ public class NationaliteController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listNationalite.add(new Nationalite(resultSet.getInt("id_nationalite"), resultSet.getString("nationalite")));
+                listNationalite.add(new Nationalite(resultSet.getInt("id"), resultSet.getString("nationalite")));
             }
             return listNationalite;
         } catch (SQLException ex) {

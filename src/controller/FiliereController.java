@@ -46,17 +46,17 @@ public class FiliereController {
     
     /**
      *
-     * @param id_filiere
+     * @param id
      * @param filiere
      * @param sigle
      */
-    public void updateFiliere(int id_filiere, String filiere, String sigle){
+    public void updateFiliere(int id, String filiere, String sigle){
         try {
-            String req = "UPDATE filieres SET filiere = ?, sigle = ? WHERE id_filiere = ? ";
+            String req = "UPDATE filieres SET filiere = ?, sigle = ? WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
             preparedStatement.setString(1, filiere);
             preparedStatement.setString(2, sigle);
-            preparedStatement.setInt(3, id_filiere);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(FiliereController.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,13 +65,13 @@ public class FiliereController {
     
     /**
      *
-     * @param id_filiere
+     * @param id
      */
-    public void removeFiliere(int id_filiere){
+    public void removeFiliere(int id){
         try {
             String req = "DELETE FROM filieres WHERE id_filiere = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_filiere);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(FiliereController.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,18 +80,18 @@ public class FiliereController {
     
     /**
      *
-     * @param id_filiere
+     * @param id
      * @return
      */
-    public Filiere getFiliere(int id_filiere){
+    public Filiere getFiliere(int id){
         try {
-            String req = "SELECT * FROM filieres WHERE id_filiere = ? ";
+            String req = "SELECT * FROM filieres WHERE id = ? ";
             preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, id_filiere);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Filiere(resultSet.getInt("id_filiere"), resultSet.getString("filiere"), resultSet.getString("sigle"));
+                return new Filiere(resultSet.getInt("id"), resultSet.getString("filiere"), resultSet.getString("sigle"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(FiliereController.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,7 +107,7 @@ public class FiliereController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             if(resultSet.next()){
-                return new Filiere(resultSet.getInt("id_filiere"), resultSet.getString("filiere"), resultSet.getString("sigle"));
+                return new Filiere(resultSet.getInt("id"), resultSet.getString("filiere"), resultSet.getString("sigle"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(FiliereController.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,7 +127,7 @@ public class FiliereController {
             preparedStatement.execute();
             resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                listFiliere.add(new Filiere(resultSet.getInt("id_filiere"), resultSet.getString("filiere"), resultSet.getString("sigle")));
+                listFiliere.add(new Filiere(resultSet.getInt("id"), resultSet.getString("filiere"), resultSet.getString("sigle")));
             }
             return listFiliere;
         } catch (SQLException ex) {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dialog;
+package view.dialog;
 
 
 
@@ -92,7 +92,7 @@ public class AnneeDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_validerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validerActionPerformed
-        if(txt_annee.getText().isBlank()){
+        if(txt_annee.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "Champ vide ", "Erreur de syntaxe !", JOptionPane.WARNING_MESSAGE);
         }else{
             if(annee == null){

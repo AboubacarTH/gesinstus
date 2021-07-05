@@ -11,16 +11,14 @@ package bean;
  */
 public class Niveau {
     private int id;
-    private int id_option;
     private String niveau;
     private int priorite;
 
     public Niveau() {
     }
 
-    public Niveau(int id, int id_option, String niveau, int priorite) {
+    public Niveau(int id, String niveau, int priorite) {
         this.id = id;
-        this.id_option = id_option;
         this.niveau = niveau;
         this.priorite = priorite;
     }
@@ -31,14 +29,6 @@ public class Niveau {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getId_option() {
-        return id_option;
-    }
-
-    public void setId_option(int id_option) {
-        this.id_option = id_option;
     }
 
     public String getNiveau() {
